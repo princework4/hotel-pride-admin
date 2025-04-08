@@ -1,0 +1,17 @@
+.form-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.form-group > label {
+  font-size: 0.8rem;
+  /* line-height: 1.5rem; */
+  letter-spacing: 0;
+}
+
+.form-group input {
+  padding: 16px !important;
+  font-size: 14px;
+}
