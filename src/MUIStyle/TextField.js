@@ -4,10 +4,10 @@ export const TextFieldStyle = {
     // transform: "translate(14px, 12px)",
   },
   "& label.Mui-focused": {
-    color: "#b85042",
+    color: "#c4b991",
   },
   "& .MuiInput-underline:after": {
-    borderBottomColor: "#b85042",
+    borderBottomColor: "#c4b991",
   },
   "& .MuiOutlinedInput-root": {
     borderRadius: "30px",
@@ -19,10 +19,10 @@ export const TextFieldStyle = {
       borderColor: "rgba(0, 0, 0, 0.23)",
     },
     "&:hover fieldset": {
-      borderColor: "#b85042",
+      borderColor: "#c4b991",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#b85042",
+      borderColor: "#c4b991",
     },
   },
 };

@@ -2,20 +2,32 @@ import { Box, Button, FormControl, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { TextFieldStyle } from "../../MUIStyle/TextField";
 import { CustomButtonStyle } from "../../MUIStyle/Button";
-import CloseIconCircle from "../CloseIconCircle/CloseIconCircle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { updateOffers } from "../../services/offers";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./Offers.css";
+import { useEffect } from "react";
+import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 
 const Offers = () => {
+  const roomRedux = useSelector((state) => state.roomReducer);
+  const dispatch = useDispatch();
   const [allOffers, setAllOffers] = useState({
-    nonAc: "",
-    deluxe: "",
-    executive: "",
+    1: "",
+    2: "",
+    3: "",
   });
   const [offerStartDate, setOfferStartDate] = useState(null);
   const [offerEndDate, setOfferEndDate] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(updateLocation(window.location.pathname));
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -29,23 +41,32 @@ const Offers = () => {
   }
 
   async function handleSubmit() {
-    const data = await addOffers(
+    const transformedOffers = [];
+    for (const key in allOffers) {
+      transformedOffers.push([key, allOffers[key]]);
+    }
+    const response = await updateOffers(
+      1,
       offerStartDate,
       offerEndDate,
-      allOffers.nonAc,
-      allOffers.deluxe,
-      allOffers.executive
+      transformedOffers
     );
 
-    if (data) {
+    if (response.status === 200) {
+      toast.success("Offers updated successfully.");
     } else {
+      toast.error(
+        response?.data?.error || response?.message || response?.error
+      );
     }
 
     setAllOffers({
-      nonAc: null,
-      deluxe: null,
-      executive: null,
+      1: "",
+      2: "",
+      3: "",
     });
+    setOfferStartDate(null);
+    setOfferEndDate(null);
   }
 
   const OfferContainer = {
@@ -76,7 +97,7 @@ const Offers = () => {
     >
       <Typography
         style={{
-          color: "var(--terra-cotta)",
+          color: "var(--sage)",
           fontSize: "25px",
           fontWeight: "bolder",
         }}
@@ -94,6 +115,7 @@ const Offers = () => {
           borderRadius: "20px",
           marginTop: "20px",
           backgroundColor: "background.paper",
+          boxShadow: 3,
         }}
       >
         {/* <div className="form-group">
@@ -106,10 +128,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -132,10 +154,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -171,10 +193,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -197,10 +219,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -236,10 +258,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -262,10 +284,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   transform: "translate(14px, 7px)",
                 },
@@ -302,10 +324,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   //   transform: "translate(14px, 7px)",
                 },
@@ -328,10 +350,10 @@ const Offers = () => {
               format="DD/MM/YYYY"
               sx={{
                 "& fieldset": {
-                  borderColor: "#b85042 !important",
+                  borderColor: "#c4b991 !important",
                 },
                 "& label": {
-                  color: "#b85042 !important",
+                  color: "#c4b991 !important",
                   fontSize: "14px",
                   //   transform: "translate(14px, 7px)",
                 },
@@ -345,7 +367,21 @@ const Offers = () => {
             />
           </LocalizationProvider>
         </div>
-        <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
+
+        {roomRedux.allRoomTypes.map((roomType) => (
+          <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
+            <TextField
+              type="number"
+              name={roomType.id}
+              label={roomType.typeName}
+              variant="outlined"
+              value={allOffers[`${roomType.id}`]}
+              onChange={handleChange}
+              sx={TextFieldStyle}
+            />
+          </FormControl>
+        ))}
+        {/* <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
           <TextField
             type="number"
             name="nonAc"
@@ -379,7 +415,7 @@ const Offers = () => {
             onChange={handleChange}
             sx={TextFieldStyle}
           />
-        </FormControl>
+        </FormControl> */}
 
         <Button onClick={handleSubmit} sx={CustomButtonStyle} fullWidth>
           Submit

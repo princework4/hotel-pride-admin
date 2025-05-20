@@ -13,18 +13,26 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { deleteRoomType, getAllRoomTypes } from "../../services/roomTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 
 const RoomTypes = () => {
+  const roomRedux = useSelector((state) => state.roomReducer);
+  const dispatch = useDispatch();
+  console.log(roomRedux);
   const [allRoomTypes, setAllRoomTypes] = useState([]);
   const navigate = useNavigate();
 
   async function fetchAllRoomTypes() {
     const response = await getAllRoomTypes();
-    setAllRoomTypes(response.data);
+    if (response.status === 200) {
+      setAllRoomTypes(response.data);
+    }
   }
 
   useEffect(() => {
-    fetchAllRoomTypes();
+    // fetchAllRoomTypes();
+    dispatch(updateLocation(window.location.pathname));
   }, []);
 
   async function handleClick(id) {
@@ -32,7 +40,9 @@ const RoomTypes = () => {
     if (response?.status === 200) {
       toast.success("Record deleted successfully");
     } else {
-      toast.error(response?.message || response?.error);
+      toast.error(
+        response?.data?.error || response?.message || response?.error
+      );
     }
   }
 
@@ -53,7 +63,7 @@ const RoomTypes = () => {
       >
         <Typography
           style={{
-            color: "var(--terra-cotta)",
+            color: "var(--sage)",
             fontSize: "25px",
             fontWeight: "bolder",
           }}
@@ -62,13 +72,16 @@ const RoomTypes = () => {
         </Typography>
         <Button
           variant="contained"
-          style={{ backgroundColor: "var(--terra-cotta)" }}
+          style={{ backgroundColor: "var(--sage)" }}
           onClick={() => navigate("/add-room-type")}
         >
           Add
         </Button>
       </Box>
-      <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ marginTop: "20px", boxShadow: 3 }}
+      >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -78,15 +91,16 @@ const RoomTypes = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.roomType}</TableCell>
+            {/* {allRoomTypes?.map((roomType) => ( */}
+            {roomRedux.allRoomTypes?.map((roomType) => (
+              <TableRow key={roomType.id}>
+                <TableCell>{roomType.id}</TableCell>
+                <TableCell>{roomType.typeName}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => navigate(`/room-type-detail/${row.id}`)}
+                    onClick={() => navigate(`/room-type-detail/${roomType.id}`)}
                   >
                     Edit
                   </Button>

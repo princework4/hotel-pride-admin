@@ -88,7 +88,7 @@ export async function updateRoom(
   roomTypeId
 ) {
   try {
-    const response = await axios.put(
+    const response = await axios.patch(
       `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/${id}`,
       {
         roomNumber,

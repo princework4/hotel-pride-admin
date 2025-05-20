@@ -302,21 +302,21 @@ h6 {
 }
 
 body {
-  background-color: #e7e8d1;
+  background-color: #f5f5f5;
   font-family: sans-serif;
   overflow: hidden;
 }
 
 /* Common Styling */
 :root {
-  --terra-cotta: #b85042;
-  --light-beige: #e7e8d1;
+  --sage: #c4b991;
+  --light-beige: #f5f5f5;
 }
 
 h2 {
   position: relative;
   display: inline-block;
-  color: var(--terra-cotta);
+  color: var(--sage);
   font-size: 20px;
   font-weight: bolder;
   text-transform: uppercase;
@@ -326,7 +326,7 @@ h2 {
   padding: 10px 20px;
   border: 1px solid transparent;
   border-radius: 20px;
-  background-color: var(--terra-cotta);
+  background-color: var(--sage);
   color: #fff;
   font-size: 16px;
   line-height: 20px;
@@ -340,6 +340,6 @@ h2 {
 
 button:hover {
   background-color: #fff;
-  color: var(--terra-cotta);
-  border: 1px solid var(--terra-cotta);
+  color: var(--sage);
+  border: 1px solid var(--sage);
 } */

@@ -16,7 +16,7 @@ export const TabsStyle = {
       border: "1px solid transparent",
       borderRadius: "25px",
       "&:hover": {
-        border: "1px solid #b85042",
+        border: "1px solid #c4b991",
       },
       margin: "0px 15px 5px",
       fontSize: {
@@ -32,16 +32,16 @@ export const TabsStyle = {
     //   marginTop: "10px",
     // },
     "& .Mui-selected": {
-      border: "1px solid #b85042",
+      border: "1px solid #c4b991",
     },
     // "& .Mui-disabled": {
     //   color: "#fff",
     //   backgroundColor: "rgba(0, 0, 0, 0.38)",
     // },
     "& .already_selected": {
-      border: "1px solid #b85042",
+      border: "1px solid #c4b991",
       backgroundColor: "#fff",
-      color: "#b85042",
+      color: "#c4b991",
     },
   },
 };

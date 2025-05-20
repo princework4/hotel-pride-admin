@@ -3,7 +3,7 @@ import axios from "axios";
 export async function getAllRoomTypes() {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms-types`
+      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types`
     );
     return response;
   } catch (error) {
@@ -83,12 +83,59 @@ export async function addRoomType(
   }
 }
 
-// Pending
-export async function updateRoomType(id, formData) {
+export async function updateRoomType({
+  id,
+  typeName,
+  capacityAdult,
+  capacityChild,
+  pricePerNight,
+  description,
+  roomSizeInSquareFeet,
+}) {
   try {
-    const response = await axios.put(
+    const response = await axios.patch(
       `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/${id}`,
-      { formData }
+      {
+        typeName,
+        capacityAdult,
+        capacityChild,
+        pricePerNight,
+        description,
+        roomSizeInSquareFeet,
+        assets,
+      }
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      return error.response;
+      // console.log(error.response.status);
+      // console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+      return error.request;
+    } else {
+      console.log("Error", error.message);
+      return error.message;
+    }
+    // console.log(error.config);
+  }
+}
+
+export async function updateRoomTypeAssets(formData) {
+  console.log("api assets :- ", formData.getAll("newAssets"));
+  try {
+    const response = await axios.post(
+      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/assets/upload`,
+      {
+        assets: formData.get("newAssets"),
+      }
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // }
     );
     return response;
   } catch (error) {
@@ -112,6 +159,29 @@ export async function deleteRoomType(id) {
   try {
     const response = await axios.delete(
       `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/${id}`
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      return error.response;
+      // console.log(error.response.status);
+      // console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+      return error.request;
+    } else {
+      console.log("Error", error.message);
+      return error.message;
+    }
+    // console.log(error.config);
+  }
+}
+
+export async function deleteRoomTypeImage(id) {
+  try {
+    const response = await axios.delete(
+      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/assets/remove?assetId=${id}`
     );
     return response;
   } catch (error) {

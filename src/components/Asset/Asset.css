@@ -1,0 +1,14 @@
+.assets .close_icon_wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.assets .close_icon {
+  width: 20px;
+  height: 20px;
+}
+
+.assets .close_icon svg {
+  font-size: 1rem !important;
+}

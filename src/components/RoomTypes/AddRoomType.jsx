@@ -2,10 +2,13 @@ import { Box, Button, FormControl, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { TextFieldStyle } from "../../MUIStyle/TextField";
 import { useNavigate } from "react-router-dom";
-import { addRoomType } from "../../services/roomTypes";
+import { addRoomType, updateRoomTypeAssets } from "../../services/roomTypes";
 import { toast } from "react-toastify";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+import { useEffect } from "react";
+import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { useDispatch } from "react-redux";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -28,9 +31,15 @@ const AddRoomType = () => {
     description: "",
     roomSizeInSquareFeet: "",
     amenities: null,
-    assets: null,
   });
+  const [newAssets, setNewAssets] = useState([]);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updateLocation(window.location.pathname));
+  }, []);
 
   function handleChange(e, isAssets) {
     if (isAssets) {
@@ -62,13 +71,31 @@ const AddRoomType = () => {
     });
   }
 
+  function handleAssets(e) {
+    const files = e.target.files;
+    console.log("files :- ", files);
+    setNewAssets(files);
+  }
+
   async function handleClick() {
-    // const response = await addRoomType();
-    // if (response?.status === 200) {
-    //   toast.success("New Room Type added successfully");
-    // } else {
-    //   toast.error(response?.message || response?.error);
-    // }
+    const response = await addRoomType();
+    if (response?.status === 200) {
+      toast.success("New Room Type added successfully");
+    } else {
+      toast.error(
+        response?.data?.error || response?.message || response?.error
+      );
+    }
+  }
+
+  async function handleAssetClick() {
+    const formData = new FormData();
+    for (let i = 0; i < newAssets?.length; i++) {
+      formData.append("newAssets", newAssets[i]);
+    }
+
+    const response = await updateRoomTypeAssets(formData);
+    console.log(response);
   }
 
   return (
@@ -80,7 +107,7 @@ const AddRoomType = () => {
     >
       <Typography
         style={{
-          color: "var(--terra-cotta)",
+          color: "var(--sage)",
           fontSize: "25px",
           fontWeight: "bolder",
         }}
@@ -175,14 +202,14 @@ const AddRoomType = () => {
             variant="contained"
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
-            sx={{ backgroundColor: "var(--terra-cotta)" }}
+            sx={{ backgroundColor: "var(--sage)" }}
           >
             Upload Assets
             <VisuallyHiddenInput
               name="assets"
               type="file"
               accept="image/*"
-              onChange={(e) => handleChange(e, true)}
+              onChange={handleAssets}
               multiple
             />
           </Button>
@@ -194,6 +221,14 @@ const AddRoomType = () => {
             onClick={() => navigate(-1)}
           >
             Back
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ marginLeft: "20px" }}
+            onClick={handleAssetClick}
+          >
+            Add Assets
           </Button>
           <Button
             variant="contained"

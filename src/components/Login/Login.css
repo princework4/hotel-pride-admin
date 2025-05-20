@@ -1,0 +1,22 @@
+.login {
+  margin-top: 10px;
+}
+
+.login > div {
+  margin: 8px 0;
+}
+
+.css-1izfg5m {
+  width: auto !important;
+  max-width: 500px !important;
+  min-width: 300px !important;
+}
+
+@media (max-width: 400px) {
+  .css-vc87kr {
+    padding: 30px 15px !important;
+  }
+  .css-19kzrtu {
+    padding: 15px !important;
+  }
+}

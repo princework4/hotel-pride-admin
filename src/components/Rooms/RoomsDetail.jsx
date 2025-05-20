@@ -13,31 +13,51 @@ import React, { useEffect, useState } from "react";
 import { TextFieldStyle } from "../../MUIStyle/TextField";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRoomById, updateRoom } from "../../services/rooms";
+import { toast } from "react-toastify";
+import { getAllRoomTypes } from "../../services/roomTypes";
+import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const RoomsDetail = () => {
+  const roomRedux = useSelector((state) => state.roomReducer);
+  const dispatch = useDispatch();
   const [roomDetails, setRoomDetails] = useState({
-    id: null,
-    roomNumber: null,
-    roomType: null,
+    id: 0,
+    roomNumber: 0,
+    roomType: "",
   });
-  const [checked, setChecked] = useState(true);
+  const [roomAvailable, setRoomAvailable] = useState(true);
+  const [allRoomTypes, setAllRoomTypes] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
   async function fetchRoomDetail() {
     const response = await getRoomById(id);
-    setRoomDetails({
-      id: response?.data?.id,
-      roomNumber: response?.data?.roomNumber,
-      roomType: response?.data?.roomType,
-    });
+    if (response.status === 200) {
+      setRoomDetails({
+        id: response.data.id,
+        roomNumber: response.data.roomNumber,
+        roomType: response.data.roomType.id,
+      });
+      setRoomAvailable(response.data.available);
+    }
+  }
+
+  async function fetchAllRoomTypes() {
+    const response = await getAllRoomTypes();
+    if (response.status === 200) {
+      setAllRoomTypes(response.data);
+    }
   }
 
   useEffect(() => {
     fetchRoomDetail();
+    // fetchAllRoomTypes();
+    setAllRoomTypes(roomRedux.allRoomTypes);
+    dispatch(updateLocation(window.location.pathname));
   }, []);
 
-  function handleChange() {
+  function handleChange(e) {
     const { name, value } = e.target;
 
     setRoomDetails((preval) => {
@@ -52,15 +72,18 @@ const RoomsDetail = () => {
     const response = await updateRoom(
       roomDetails.id,
       roomDetails.roomNumber,
-      checked,
+      roomAvailable,
       1,
       roomDetails.roomType
     );
 
-    if (response?.status === 200) {
+    if (response.status === 200) {
       toast.success("Updated Room details successfully");
+      navigate("/rooms");
     } else {
-      toast.error(response?.message || response?.error);
+      toast.error(
+        response?.data?.error || response?.message || response?.error
+      );
     }
   }
 
@@ -73,7 +96,7 @@ const RoomsDetail = () => {
     >
       <Typography
         style={{
-          color: "var(--terra-cotta)",
+          color: "var(--sage)",
           fontSize: "25px",
           fontWeight: "bolder",
         }}
@@ -95,7 +118,7 @@ const RoomsDetail = () => {
             name="roomNumber"
             label="Room Number"
             variant="outlined"
-            //   value={values.guest}
+            value={roomDetails.roomNumber}
             onChange={handleChange}
             sx={TextFieldStyle}
           />
@@ -112,14 +135,14 @@ const RoomsDetail = () => {
         >
           <Typography>Is Room Available</Typography>
           <Switch
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
+            checked={roomAvailable}
+            onChange={(e) => setRoomAvailable(e.target.checked)}
             sx={{
               "& .Mui-checked": {
-                color: "#b85042 !important",
+                color: "#c4b991 !important",
               },
               "& .Mui-checked+.MuiSwitch-track": {
-                backgroundColor: "#b85042 !important",
+                backgroundColor: "#c4b991 !important",
               },
             }}
           />
@@ -130,7 +153,7 @@ const RoomsDetail = () => {
             sx={{
               fontSize: "14px",
               "&.Mui-focused": {
-                color: "#b85042 !important",
+                color: "#c4b991 !important",
               },
             }}
           >
@@ -141,19 +164,27 @@ const RoomsDetail = () => {
             label="Room Type"
             labelId="simple-select-label"
             inputProps={{ "aria-label": "Without label" }}
+            value={roomDetails.roomType}
             onChange={handleChange}
             sx={{
               borderRadius: "30px",
               fontSize: "14px",
               "&:hover fieldset": {
-                borderColor: "#b85042 !important",
+                borderColor: "#c4b991 !important",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#b85042 !important",
+                borderColor: "#c4b991 !important",
               },
             }}
           >
-            <MenuItem key={1} value={1}>
+            {allRoomTypes?.map((allRoomType) => {
+              return (
+                <MenuItem key={allRoomType.id} value={allRoomType.id}>
+                  {allRoomType.typeName}
+                </MenuItem>
+              );
+            })}
+            {/* <MenuItem key={1} value={1}>
               Non - AC
             </MenuItem>
             <MenuItem key={2} value={2}>
@@ -161,7 +192,7 @@ const RoomsDetail = () => {
             </MenuItem>
             <MenuItem key={3} value={3}>
               Superior
-            </MenuItem>
+            </MenuItem> */}
           </Select>
         </FormControl>
         <Box sx={{ marginTop: "20px", textAlign: "right" }}>

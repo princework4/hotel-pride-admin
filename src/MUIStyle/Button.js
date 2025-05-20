@@ -4,7 +4,7 @@ export const CustomButtonStyle = {
   border: "1px solid transparent",
   borderRadius: "50px",
   margin: "20px 0 0",
-  backgroundColor: "#b85042",
+  backgroundColor: "#c4b991",
   color: "#fff",
   transition: "0.3s ease-in-out",
 };
