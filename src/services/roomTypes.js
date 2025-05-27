@@ -102,7 +102,6 @@ export async function updateRoomType({
         pricePerNight,
         description,
         roomSizeInSquareFeet,
-        assets,
       }
     );
     return response;

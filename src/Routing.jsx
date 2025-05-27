@@ -8,13 +8,21 @@ import RoomsDetail from "./components/Rooms/RoomsDetail";
 import RoomTypeDetail from "./components/RoomTypes/RoomTypeDetail";
 import AddRoomType from "./components/RoomTypes/AddRoomType";
 import Home from "./pages/Home";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 const Routing = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/rooms" element={<Rooms />} />
+        <Route
+          path="/rooms"
+          element={
+            <ProtectedRoute>
+              <Rooms />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/room-detail" element={<RoomsDetail />} />
         <Route path="/add-rooms" element={<AddRoom />} />
         <Route path="/room-types" element={<RoomTypes />} />

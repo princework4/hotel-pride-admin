@@ -14,7 +14,6 @@ const Rooms = () => {
 
   async function fetchAllRooms() {
     const response = await getAllRooms();
-    console.log(response);
     if (response.status === 200) {
       const transformedData = [];
       for (let i = 0; i < response.data.length; i++) {
@@ -74,7 +73,7 @@ const Rooms = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => navigate(`/room-detail/${params.id}`)}
+              onClick={() => navigate(`/rooms-detail/${params.id}`)}
             >
               Edit
             </Button>
@@ -120,7 +119,7 @@ const Rooms = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => navigate(`/room-detail/${params.id}`)}
+              onClick={() => navigate(`/rooms-detail/${params.id}`)}
             >
               Edit
             </Button>
@@ -174,7 +173,7 @@ const Rooms = () => {
         <Button
           variant="contained"
           style={{ backgroundColor: "var(--sage)" }}
-          onClick={() => navigate("/add-room")}
+          onClick={() => navigate("/add-rooms")}
         >
           Add
         </Button>

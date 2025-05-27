@@ -38,19 +38,28 @@ import { getAllCustomers } from "./services/customers";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "./features/nonFunctional/nonFunctionalSlice";
 import LogInForm from "./components/Login/Login";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 const drawerWidth = 240;
 
 function App() {
   const nonFunctionalRedux = useSelector((state) => state.nonFunctionalReducer);
   const dispatch = useDispatch();
-  console.log(window.location);
 
   const allRoutes = {
-    customer: "All Customers",
-    "room-types": "Room Types",
-    rooms: "Rooms",
-    offers: "Offers",
+    "All Customers": ["customer", "customer-detail"],
+    "Room Types": ["room-types", "room-type-detail", "add-room-type"],
+    Rooms: ["rooms", "rooms-detail", "add-rooms"],
+    Offers: ["offers"],
+
+    // customer: "All Customers",
+    // "room-types": "Room Types",
+    // "room-type-detail": "Room Types",
+    // "add-room-type": "Room Types",
+    // rooms: "Rooms",
+    // "room-detail": "Rooms",
+    // "add-room": "Rooms",
+    // offers: "Offers",
   };
 
   const allIcons = [
@@ -114,6 +123,24 @@ function App() {
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
+  function getBackgroundColor(allRoutes) {
+    for (let i = 0; i < allRoutes.length; i++) {
+      if (nonFunctionalRedux.location.includes(allRoutes[i])) {
+        return "#c4b991";
+      }
+    }
+    return "#fff";
+  }
+
+  function getTextColor(allRoutes) {
+    for (let i = 0; i < allRoutes.length; i++) {
+      if (nonFunctionalRedux.location.includes(allRoutes[i])) {
+        return "#fff";
+      }
+    }
+    return "#c4b991";
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -155,40 +182,39 @@ function App() {
             <Divider />
             <List>
               {Object.entries(allRoutes).map((allRoute, index) => (
-                <ListItem
-                  key={allRoute[1]}
-                  to={allRoute[0]}
-                  component={Link}
-                  disablePadding
-                  sx={{
-                    // backgroundColor:
-                    //   indexToRoute[selectedIndex] == allRoute[1]
-                    //     ? "#c4b991"
-                    //     : "#fff",
-                    backgroundColor: nonFunctionalRedux.location.includes(
-                      allRoute[0]
-                    )
-                      ? "#c4b991"
-                      : "#fff",
-                  }}
-                  onClick={() => setSelectedIndex(index)}
+                <Link
+                  to={allRoute[1][0]}
+                  style={{ width: "100%" }}
+                  key={allRoute[0]}
                 >
-                  <ListItemButton>
-                    <ListItemIcon>{allIcons[index]}</ListItemIcon>
-                    <ListItemText
-                      primary={allRoute[1]}
-                      sx={{
-                        // color:
-                        //   indexToRoute[selectedIndex] == allRoute[1]
-                        //     ? "#fff"
-                        //     : "#c4b991",
-                        color: nonFunctionalRedux.location.includes(allRoute[0])
-                          ? "#fff"
-                          : "#c4b991",
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
+                  <ListItem
+                    // to={allRoute[1][0]}
+                    // component={Link}
+                    disablePadding
+                    sx={{
+                      // backgroundColor:
+                      //   indexToRoute[selectedIndex] == allRoute[1]
+                      //     ? "#c4b991"
+                      //     : "#fff",
+                      backgroundColor: getBackgroundColor(allRoute[1]),
+                    }}
+                    // onClick={() => setSelectedIndex(index)}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>{allIcons[index]}</ListItemIcon>
+                      <ListItemText
+                        primary={allRoute[0]}
+                        sx={{
+                          // color:
+                          //   indexToRoute[selectedIndex] == allRoute[1]
+                          //     ? "#fff"
+                          //     : "#c4b991",
+                          color: getTextColor(allRoute[1]),
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
               ))}
             </List>
             <Divider />
@@ -207,21 +233,78 @@ function App() {
             <Toolbar />
             <Routes>
               <Route path="" element={<LogInForm />} />
-              <Route path="/customer" element={<Customers />} />
+              <Route
+                path="/customer"
+                element={
+                  // <ProtectedRoute>
+                  <Customers />
+                  // </ProtectedRoute>
+                }
+              />
               <Route
                 path="/customer-detail/:bookingNumber"
-                element={<CustomersDetail />}
+                element={
+                  // <ProtectedRoute>
+                  <CustomersDetail />
+                  // </ProtectedRoute>
+                }
               />
-              <Route path="/rooms" element={<Rooms />} />
-              <Route path="/room-detail/:id" element={<RoomsDetail />} />
-              <Route path="/add-room" element={<AddRoom />} />
-              <Route path="/room-types" element={<RoomTypes />} />
+              <Route
+                path="/rooms"
+                element={
+                  // <ProtectedRoute>
+                  <Rooms />
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/rooms-detail/:id"
+                element={
+                  // <ProtectedRoute>
+                  <RoomsDetail />
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/add-rooms"
+                element={
+                  // <ProtectedRoute>
+                  <AddRoom />
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/room-types"
+                element={
+                  // <ProtectedRoute>
+                  <RoomTypes />
+                  // </ProtectedRoute>
+                }
+              />
               <Route
                 path="/room-type-detail/:id"
-                element={<RoomTypeDetail />}
+                element={
+                  // <ProtectedRoute>
+                  <RoomTypeDetail />
+                  // </ProtectedRoute>
+                }
               />
-              <Route path="/add-room-type" element={<AddRoomType />} />
-              <Route path="/offers" element={<Offers />} />
+              <Route
+                path="/add-room-type"
+                element={
+                  // <ProtectedRoute>
+                  <AddRoomType />
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/offers"
+                element={
+                  // <ProtectedRoute>
+                  <Offers />
+                  // </ProtectedRoute>
+                }
+              />
             </Routes>
           </Box>
         </Box>

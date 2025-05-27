@@ -9,9 +9,7 @@ import { deleteRoomTypeImage } from "../../services/roomTypes";
 const Asset = ({ allImages, setAllImages }) => {
   async function handleClick(filterId) {
     const response = await deleteRoomTypeImage(filterId);
-    console.log(response);
     // const filteredImages = allImages.filter((image) => image.id !== filterId);
-    // console.log(filteredImages);
     // setAllImages(filteredImages);
   }
 
@@ -26,7 +24,7 @@ const Asset = ({ allImages, setAllImages }) => {
         <ImageListItem key={image.id} sx={{ position: "relative" }}>
           <img
             // srcSet={`${image.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            src={`${process.env.BASE_URL}${image.assetUrl}?w=164&h=164&fit=crop&auto=format`}
+            src={`${process.env.BASE_URL}/${image.assetUrl}?w=164&h=164&fit=crop&auto=format`}
             // alt={image.title}
             loading="lazy"
           />

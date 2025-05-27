@@ -15,7 +15,6 @@ const Customers = () => {
 
   async function fetchAllCustomers() {
     const response = await getAllCustomers();
-    console.log(response);
     if (response.status === 200) {
       const finalArr = [];
       for (let i = 0; i < response.data.length; i++) {
@@ -54,7 +53,6 @@ const Customers = () => {
       headerName: "Actions",
       width: 250,
       renderCell: (params) => {
-        console.log(params);
         return (
           <>
             <Button

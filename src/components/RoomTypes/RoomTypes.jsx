@@ -19,7 +19,6 @@ import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice"
 const RoomTypes = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
   const dispatch = useDispatch();
-  console.log(roomRedux);
   const [allRoomTypes, setAllRoomTypes] = useState([]);
   const navigate = useNavigate();
 

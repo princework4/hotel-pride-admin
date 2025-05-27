@@ -73,7 +73,6 @@ const AddRoomType = () => {
 
   function handleAssets(e) {
     const files = e.target.files;
-    console.log("files :- ", files);
     setNewAssets(files);
   }
 
@@ -95,7 +94,6 @@ const AddRoomType = () => {
     }
 
     const response = await updateRoomTypeAssets(formData);
-    console.log(response);
   }
 
   return (

@@ -149,7 +149,6 @@ const RoomTypeDetail = () => {
 
   function handleAssets(e) {
     const files = e.target.files;
-    console.log("files :- ", files);
     setNewAssets(files);
   }
 

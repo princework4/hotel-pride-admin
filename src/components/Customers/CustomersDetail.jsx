@@ -21,6 +21,7 @@ import { getAllRoomTypes } from "../../services/roomTypes";
 import { updateCustomerCheckoutDate } from "../../services/customers";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import dayjs from "dayjs";
 
 const CustomersDetail = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -33,14 +34,13 @@ const CustomersDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(roomRedux.allCustomers);
     const oldDate = roomRedux.allCustomers?.map((customer) => {
       if (customer.bookingNumber === customerBookingNumber) {
         return customer.checkOut;
       }
       return "";
     });
-    setOldCheckoutDate(oldDate);
+    setOldCheckoutDate(oldDate[0].split("-").reverse().join("-"));
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
@@ -112,7 +112,7 @@ const CustomersDetail = () => {
             name="oldCheckoutDate"
             label="Old Checkout Date"
             variant="outlined"
-            value={oldCheckoutDate}
+            value={oldCheckoutDate.split("-").reverse().join("-")}
             sx={TextFieldStyle}
             disabled={true}
           />
@@ -124,6 +124,7 @@ const CustomersDetail = () => {
               value={checkoutDate}
               onChange={(newValue) => setCheckoutDate(newValue)}
               disablePast={true}
+              minDate={dayjs(new Date(oldCheckoutDate)).add(1, "day")}
               format="DD-MM-YYYY"
               sx={{
                 "& fieldset": {

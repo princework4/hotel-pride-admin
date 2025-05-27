@@ -11,6 +11,7 @@ import {
   updateLoggedInUserType,
 } from "../../features/auth/authSlice";
 import "./Login.css";
+import { ADMIN, RECEPTIONIST, SUPERADMIN } from "../../constants";
 
 const LogInForm = ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -30,12 +31,22 @@ const LogInForm = ({ handleClose }) => {
     });
   }
 
+  function updateUserType(data) {
+    if (data.email === "reservation@hotelpride.com")
+      dispatch(updateLoggedInUserType(RECEPTIONIST));
+    else if (data.email === "admin@hotelpride.com")
+      dispatch(updateLoggedInUserType(ADMIN));
+    else if (data.email === "superadmin@hotelpride.com")
+      dispatch(updateLoggedInUserType(SUPERADMIN));
+  }
+
   async function handleClick() {
     const response = await loginUser(loginDetails);
     if (response?.status === 200) {
       setError("");
       dispatch(updateLoggedInUser(response.data));
       dispatch(updateIsUserLoggedIn(true));
+      updateUserType(response);
       toast.success("Logged In Successfully");
       sessionStorage.setItem(
         "userObj",
