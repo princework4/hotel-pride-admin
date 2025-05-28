@@ -46,23 +46,24 @@ export async function getRoomTypeById(id) {
   }
 }
 
-// Pending
-export async function addRoomType(
+export async function addRoomType({
   typeName,
   capacityAdult,
   capacityChild,
   pricePerNight,
   description,
-  roomSizeInSquareFeet
-) {
+  roomSizeInSquareFeet,
+}) {
   try {
     const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/hotel/${hotelId}`,
+      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types`,
       {
-        roomNumber,
-        roomAvailable,
-        hotelId,
-        roomTypeId,
+        typeName,
+        capacityAdult: Number(capacityAdult),
+        capacityChild: Number(capacityChild),
+        pricePerNight: Number(pricePerNight),
+        description,
+        roomSizeInSquareFeet: Number(roomSizeInSquareFeet),
       }
     );
     return response;

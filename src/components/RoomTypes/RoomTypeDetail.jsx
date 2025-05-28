@@ -314,7 +314,7 @@ const RoomTypeDetail = () => {
             variant="contained"
             color="secondary"
             sx={{ marginLeft: "20px" }}
-            onClick={handleAssetClick}
+            // onClick={handleAssetClick}
           >
             Update Assets
           </Button>

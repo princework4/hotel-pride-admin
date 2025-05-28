@@ -59,7 +59,7 @@ export async function addRooms(
         roomNumber,
         roomAvailable,
         hotelId,
-        roomTypeId,
+        roomTypeId: Number(roomTypeId),
       }
     );
     return response;

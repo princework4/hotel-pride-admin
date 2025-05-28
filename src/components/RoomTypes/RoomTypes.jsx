@@ -15,9 +15,11 @@ import { useNavigate } from "react-router-dom";
 import { deleteRoomType, getAllRoomTypes } from "../../services/roomTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { ADMIN, SUPERADMIN } from "../../constants";
 
 const RoomTypes = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
+  const authRedux = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const [allRoomTypes, setAllRoomTypes] = useState([]);
   const navigate = useNavigate();
@@ -103,14 +105,17 @@ const RoomTypes = () => {
                   >
                     Edit
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    style={{ marginLeft: "10px" }}
-                    onClick={handleClick}
-                  >
-                    Delete
-                  </Button>
+                  {(authRedux.loggedInUserType === ADMIN ||
+                    authRedux.loggedInUserType === SUPERADMIN) && (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      style={{ marginLeft: "10px" }}
+                      onClick={handleClick}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

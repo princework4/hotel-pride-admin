@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { deleteRoom, getAllRooms } from "../../services/rooms";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { ADMIN, SUPERADMIN } from "../../constants";
 
 const Rooms = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
+  const authRedux = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const [allRooms, setAllRooms] = useState([]);
   const navigate = useNavigate();
@@ -46,7 +48,7 @@ const Rooms = () => {
   }
 
   const allColumns = [
-    { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 50 },
     { field: "roomNumber", headerName: "Room Number", width: 150 },
     { field: "roomType", headerName: "Room Type", width: 150 },
     {
@@ -77,14 +79,17 @@ const Rooms = () => {
             >
               Edit
             </Button>
-            <Button
-              variant="contained"
-              color="error"
-              style={{ marginLeft: "10px" }}
-              onClick={() => handleClick(params.id)}
-            >
-              Delete
-            </Button>
+            {(authRedux.loggedInUserType === ADMIN ||
+              authRedux.loggedInUserType === SUPERADMIN) && (
+              <Button
+                variant="contained"
+                color="error"
+                style={{ marginLeft: "10px" }}
+                onClick={() => handleClick(params.id)}
+              >
+                Delete
+              </Button>
+            )}
           </>
         );
       },

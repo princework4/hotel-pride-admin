@@ -30,9 +30,8 @@ const AddRoomType = () => {
     pricePerNight: "",
     description: "",
     roomSizeInSquareFeet: "",
-    amenities: null,
   });
-  const [newAssets, setNewAssets] = useState([]);
+  // const [newAssets, setNewAssets] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,27 +40,7 @@ const AddRoomType = () => {
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
-  function handleChange(e, isAssets) {
-    if (isAssets) {
-      const { name, files } = e.target;
-      const reader = new FileReader();
-      const allAssets = [];
-
-      for (let i = 0; i < files.length; i++) {
-        reader.readAsDataURL(files[i]);
-        reader.onloadend = () => {
-          allAssets.push(reader.result);
-        };
-      }
-
-      setRoomTypeDetail((preval) => {
-        return {
-          ...preval,
-          [name]: allAssets,
-        };
-      });
-    }
-
+  function handleChange(e) {
     const { name, value } = e.target;
     setRoomTypeDetail((preval) => {
       return {
@@ -71,13 +50,13 @@ const AddRoomType = () => {
     });
   }
 
-  function handleAssets(e) {
-    const files = e.target.files;
-    setNewAssets(files);
-  }
+  // function handleAssets(e) {
+  //   const files = e.target.files;
+  //   setNewAssets(files);
+  // }
 
   async function handleClick() {
-    const response = await addRoomType();
+    const response = await addRoomType(roomTypeDetail);
     if (response?.status === 200) {
       toast.success("New Room Type added successfully");
     } else {
@@ -87,14 +66,14 @@ const AddRoomType = () => {
     }
   }
 
-  async function handleAssetClick() {
-    const formData = new FormData();
-    for (let i = 0; i < newAssets?.length; i++) {
-      formData.append("newAssets", newAssets[i]);
-    }
+  // async function handleAssetClick() {
+  //   const formData = new FormData();
+  //   for (let i = 0; i < newAssets?.length; i++) {
+  //     formData.append("newAssets", newAssets[i]);
+  //   }
 
-    const response = await updateRoomTypeAssets(formData);
-  }
+  //   const response = await updateRoomTypeAssets(formData);
+  // }
 
   return (
     <Box
@@ -188,7 +167,7 @@ const AddRoomType = () => {
             sx={TextFieldStyle}
           />
         </FormControl>
-        <Box
+        {/* <Box
           sx={{
             marginTop: "20px",
             textAlign: "right",
@@ -211,7 +190,7 @@ const AddRoomType = () => {
               multiple
             />
           </Button>
-        </Box>
+        </Box> */}
         <Box sx={{ marginTop: "20px", textAlign: "right" }}>
           <Button
             variant="contained"
@@ -220,14 +199,14 @@ const AddRoomType = () => {
           >
             Back
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             sx={{ marginLeft: "20px" }}
             onClick={handleAssetClick}
           >
             Add Assets
-          </Button>
+          </Button> */}
           <Button
             variant="contained"
             color="success"

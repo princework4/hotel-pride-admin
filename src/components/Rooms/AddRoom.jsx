@@ -61,13 +61,15 @@ const AddRoom = () => {
       roomDetails.roomType
     );
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       toast.success("New Room added successfully");
     } else {
       toast.error(
         response?.data?.error || response?.message || response?.error
       );
     }
+
+    setRoomDetails({ roomNumber: "", roomType: "" });
   }
 
   return (
