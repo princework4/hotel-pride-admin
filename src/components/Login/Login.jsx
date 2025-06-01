@@ -12,6 +12,8 @@ import {
 } from "../../features/auth/authSlice";
 import "./Login.css";
 import { ADMIN, RECEPTIONIST, SUPERADMIN } from "../../constants";
+import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { useEffect } from "react";
 
 const LogInForm = ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -70,6 +72,10 @@ const LogInForm = ({ handleClose }) => {
       password: "",
     });
   }
+
+  useEffect(() => {
+    dispatch(updateLocation(window.location.pathname));
+  }, []);
 
   return (
     <Box

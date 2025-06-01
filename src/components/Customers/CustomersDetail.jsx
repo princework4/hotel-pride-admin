@@ -63,6 +63,7 @@ const CustomersDetail = () => {
 
     if (response.status === 200) {
       toast.success("Updated Customer details successfully");
+      navigate("/customer");
     } else {
       toast.error(
         response?.data?.error || response?.message || response?.error

@@ -3,7 +3,7 @@ import axios from "axios";
 export async function getAllRooms(hotelId = 1) {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/available/hotel/${hotelId}`
+      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/hotel/${hotelId}`
     );
     return response;
   } catch (error) {
@@ -91,10 +91,10 @@ export async function updateRoom(
     const response = await axios.patch(
       `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/${id}`,
       {
-        roomNumber,
-        roomAvailable,
-        hotelId,
-        roomTypeId,
+        roomNumber: roomNumber,
+        roomAvailable: roomAvailable,
+        hotelId: hotelId,
+        roomTypeId: roomTypeId,
       }
     );
     return response;

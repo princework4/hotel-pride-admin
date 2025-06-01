@@ -63,6 +63,7 @@ const AddRoom = () => {
 
     if (response.status === 201) {
       toast.success("New Room added successfully");
+      navigate("/rooms");
     } else {
       toast.error(
         response?.data?.error || response?.message || response?.error

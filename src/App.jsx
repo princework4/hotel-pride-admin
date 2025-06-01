@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,6 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -47,10 +48,11 @@ function App() {
   const dispatch = useDispatch();
 
   const allRoutes = {
-    "All Customers": ["customer", "customer-detail"],
-    "Room Types": ["room-types", "room-type-detail", "add-room-type"],
-    Rooms: ["rooms", "rooms-detail", "add-rooms"],
-    Offers: ["offers"],
+    Login: ["/login"],
+    "All Customers": ["/customer", "/customer-detail"],
+    "Room Types": ["/room-types", "/room-type-detail", "/add-room-type"],
+    Rooms: ["/rooms", "/rooms-detail", "/add-rooms"],
+    Offers: ["/offers"],
 
     // customer: "All Customers",
     // "room-types": "Room Types",
@@ -63,6 +65,7 @@ function App() {
   };
 
   const allIcons = [
+    <LoginIcon />,
     <PersonIcon />,
     <HouseIcon />,
     <MeetingRoomIcon />,
@@ -123,18 +126,19 @@ function App() {
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
-  function getBackgroundColor(allRoutes) {
-    for (let i = 0; i < allRoutes.length; i++) {
-      if (nonFunctionalRedux.location.includes(allRoutes[i])) {
+  function getBackgroundColor(allRoutesPaths) {
+    console.log(nonFunctionalRedux);
+    for (let i = 0; i < allRoutesPaths.length; i++) {
+      if (nonFunctionalRedux.location.includes(allRoutesPaths[i])) {
         return "#c4b991";
       }
     }
     return "#fff";
   }
 
-  function getTextColor(allRoutes) {
-    for (let i = 0; i < allRoutes.length; i++) {
-      if (nonFunctionalRedux.location.includes(allRoutes[i])) {
+  function getTextColor(allRoutesPaths) {
+    for (let i = 0; i < allRoutesPaths.length; i++) {
+      if (nonFunctionalRedux.location.includes(allRoutesPaths[i])) {
         return "#fff";
       }
     }
@@ -232,7 +236,8 @@ function App() {
           >
             <Toolbar />
             <Routes>
-              <Route path="" element={<LogInForm />} />
+              <Route path="" element={<Navigate to="/login" />} />
+              <Route path="/login" element={<LogInForm />} />
               <Route
                 path="/customer"
                 element={

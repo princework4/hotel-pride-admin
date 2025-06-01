@@ -6,10 +6,10 @@ import { getAllCustomers } from "../../services/customers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { updateAllCustomers } from "../../features/room/roomSlice";
 
 const Customers = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
-  const [allCustomers, setAllCustomers] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,12 +31,12 @@ const Customers = () => {
         };
         finalArr.push(customerObj);
       }
-      setAllCustomers(finalArr);
+      dispatch(updateAllCustomers(finalArr));
     }
   }
 
   useEffect(() => {
-    // fetchAllCustomers();
+    fetchAllCustomers();
     dispatch(updateLocation(window.location.pathname));
   }, []);
 

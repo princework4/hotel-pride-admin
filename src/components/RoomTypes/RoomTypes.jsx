@@ -71,13 +71,13 @@ const RoomTypes = () => {
         >
           Room Types
         </Typography>
-        <Button
+        {/* <Button
           variant="contained"
           style={{ backgroundColor: "var(--sage)" }}
           onClick={() => navigate("/add-room-type")}
         >
           Add
-        </Button>
+        </Button> */}
       </Box>
       <TableContainer
         component={Paper}

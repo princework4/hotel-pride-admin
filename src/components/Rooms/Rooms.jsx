@@ -6,6 +6,7 @@ import { deleteRoom, getAllRooms } from "../../services/rooms";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 import { ADMIN, SUPERADMIN } from "../../constants";
+import { updateAllRooms } from "../../features/room/roomSlice";
 
 const Rooms = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -27,12 +28,12 @@ const Rooms = () => {
         };
         transformedData.push(obj);
       }
-      setAllRooms(transformedData);
+      dispatch(updateAllRooms(transformedData));
     }
   }
 
   useEffect(() => {
-    // fetchAllRooms();
+    fetchAllRooms();
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
