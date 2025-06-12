@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
+import { ADMIN, RECEPTIONIST } from "../../constants";
+import {
+  updateIsUserLoggedIn,
+  updateLoggedInUser,
+  updateLoggedInUserType,
+} from "../../features/auth/authSlice";
 
 const ProtectedRoute = ({ children }) => {
   const authRedux = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
-  if (authRedux.isUserLoggedIn) {
+  useEffect(() => {
+    if (sessionStorage.getItem("userObj")) {
+      const obj = JSON.parse(sessionStorage.getItem("userObj"));
+      dispatch(updateLoggedInUser(obj));
+      dispatch(updateIsUserLoggedIn(obj.isLoggedIn));
+      dispatch(updateLoggedInUserType(obj.loggedInUserType));
+    }
+  }, []);
+
+  if (
+    authRedux.isUserLoggedIn &&
+    (authRedux.loggedInUserType == RECEPTIONIST ||
+      authRedux.loggedInUserType == ADMIN)
+  ) {
     return children;
   }
 
-  dispatch(updateLocation("/"));
+  // dispatch(updateLocation("/"));
   return <Navigate to="/" />;
 };
 

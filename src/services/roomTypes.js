@@ -1,10 +1,11 @@
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const apiVersion = import.meta.env.VITE_API_VERSION;
+
 export async function getAllRoomTypes() {
   try {
-    const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types`
-    );
+    const response = await axios.get(`${baseUrl}/${apiVersion}/room-types`);
     return response;
   } catch (error) {
     if (error.response) {
@@ -26,7 +27,7 @@ export async function getAllRoomTypes() {
 export async function getRoomTypeById(id) {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/${id}`
+      `${baseUrl}/${apiVersion}/room-types/${id}`
     );
     return response;
   } catch (error) {
@@ -55,17 +56,14 @@ export async function addRoomType({
   roomSizeInSquareFeet,
 }) {
   try {
-    const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types`,
-      {
-        typeName,
-        capacityAdult: Number(capacityAdult),
-        capacityChild: Number(capacityChild),
-        pricePerNight: Number(pricePerNight),
-        description,
-        roomSizeInSquareFeet: Number(roomSizeInSquareFeet),
-      }
-    );
+    const response = await axios.post(`${baseUrl}/${apiVersion}/room-types`, {
+      typeName,
+      capacityAdult: Number(capacityAdult),
+      capacityChild: Number(capacityChild),
+      pricePerNight: Number(pricePerNight),
+      description,
+      roomSizeInSquareFeet: Number(roomSizeInSquareFeet),
+    });
     return response;
   } catch (error) {
     if (error.response) {
@@ -95,7 +93,7 @@ export async function updateRoomType({
 }) {
   try {
     const response = await axios.patch(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/${id}`,
+      `${baseUrl}/${apiVersion}/room-types/${id}`,
       {
         typeName,
         capacityAdult,
@@ -127,7 +125,7 @@ export async function updateRoomTypeAssets(formData) {
   console.log("api assets :- ", formData.getAll("newAssets"));
   try {
     const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/assets/upload`,
+      `${baseUrl}/${apiVersion}/room-types/assets/upload`,
       {
         assets: formData.get("newAssets"),
       }
@@ -158,7 +156,7 @@ export async function updateRoomTypeAssets(formData) {
 export async function deleteRoomType(id) {
   try {
     const response = await axios.delete(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/${id}`
+      `${baseUrl}/${apiVersion}/room-types/${id}`
     );
     return response;
   } catch (error) {
@@ -181,7 +179,7 @@ export async function deleteRoomType(id) {
 export async function deleteRoomTypeImage(id) {
   try {
     const response = await axios.delete(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/assets/remove?assetId=${id}`
+      `${baseUrl}/${apiVersion}/room-types/assets/remove?assetId=${id}`
     );
     return response;
   } catch (error) {

@@ -7,6 +7,9 @@ import "./Asset.css";
 import { deleteRoomTypeImage } from "../../services/roomTypes";
 
 const Asset = ({ allImages, setAllImages }) => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const apiVersion = import.meta.env.VITE_API_VERSION;
+
   async function handleClick(filterId) {
     const response = await deleteRoomTypeImage(filterId);
     // const filteredImages = allImages.filter((image) => image.id !== filterId);
@@ -24,11 +27,10 @@ const Asset = ({ allImages, setAllImages }) => {
         <ImageListItem key={image.id} sx={{ position: "relative" }}>
           <img
             // srcSet={`${image.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            src={`${process.env.BASE_URL}/${image.assetUrl}?w=164&h=164&fit=crop&auto=format`}
+            src={`${baseUrl}/${image.assetUrl}?w=164&h=164&fit=crop&auto=format`}
             // alt={image.title}
             loading="lazy"
           />
-          {/* <Button sx={{ position: "absolute", top: 0, right: 0 }}>X</Button> */}
           <CloseIconCircle
             style={{ position: "absolute", top: 0, right: 0 }}
             handleClick={() => handleClick(image.id)}

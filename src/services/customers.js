@@ -1,10 +1,13 @@
 import axios from "axios";
 import dayjs from "dayjs";
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const apiVersion = import.meta.env.VITE_API_VERSION;
+
 export async function getAllCustomersByCheckoutDate(checkOutDate) {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/bookings/user-checkouts?checkoutDate=${checkOutDate}`
+      `${baseUrl}/${apiVersion}/bookings/user-checkouts?checkoutDate=${checkOutDate}`
     );
     return response;
   } catch (error) {
@@ -27,7 +30,7 @@ export async function getAllCustomersByCheckoutDate(checkOutDate) {
 export async function getAllCustomers() {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/bookings/upcoming?hotelId=1`
+      `${baseUrl}/${apiVersion}/bookings/upcoming?hotelId=1`
     );
     return response;
   } catch (error) {
@@ -51,7 +54,7 @@ export async function updateCustomerCheckoutDate(bookingId, checkOutDate) {
   const updatedCheckOutDate = dayjs(checkOutDate).format("DD-MM-YYYY");
   try {
     const response = await axios.patch(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/bookings/${bookingId}/update-checkout?newCheckoutDate=${updatedCheckOutDate}`
+      `${baseUrl}/${apiVersion}/bookings/${bookingId}/update-checkout?newCheckoutDate=${updatedCheckOutDate}`
     );
     return response;
   } catch (error) {

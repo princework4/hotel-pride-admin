@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { deleteRoom, getAllRooms } from "../../services/rooms";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
-import { ADMIN, SUPERADMIN } from "../../constants";
 import { updateAllRooms } from "../../features/room/roomSlice";
+import { ADMIN } from "../../constants";
 
 const Rooms = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -80,8 +80,7 @@ const Rooms = () => {
             >
               Edit
             </Button>
-            {(authRedux.loggedInUserType === ADMIN ||
-              authRedux.loggedInUserType === SUPERADMIN) && (
+            {authRedux.loggedInUserType === ADMIN && (
               <Button
                 variant="contained"
                 color="error"

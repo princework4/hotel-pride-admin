@@ -1,6 +1,9 @@
 import axios from "axios";
 import dayjs from "dayjs";
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const apiVersion = import.meta.env.VITE_API_VERSION;
+
 export async function updateOffers(
   hotelId = 1,
   offerStartDate,
@@ -19,7 +22,7 @@ export async function updateOffers(
   console.log(allOffers);
   try {
     const response = await axios.patch(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/room-types/update-offers`,
+      `${baseUrl}/${apiVersion}/room-types/update-offers`,
       {
         hotelId,
         offerStartDate: updatedOfferStartDate,

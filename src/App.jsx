@@ -40,10 +40,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "./features/nonFunctional/nonFunctionalSlice";
 import LogInForm from "./components/Login/Login";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import {
+  updateIsUserLoggedIn,
+  updateLoggedInUser,
+  updateLoggedInUserType,
+} from "./features/auth/authSlice";
+import { toast } from "react-toastify";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
 function App() {
+  const authRedux = useSelector((state) => state.authReducer);
   const nonFunctionalRedux = useSelector((state) => state.nonFunctionalReducer);
   const dispatch = useDispatch();
 
@@ -71,6 +79,15 @@ function App() {
     <MeetingRoomIcon />,
     <LocalOfferIcon />,
   ];
+
+  useEffect(() => {
+    if (sessionStorage.getItem("userObj")) {
+      const obj = JSON.parse(sessionStorage.getItem("userObj"));
+      dispatch(updateLoggedInUser(obj));
+      dispatch(updateIsUserLoggedIn(obj.isLoggedIn));
+      dispatch(updateLoggedInUserType(obj.loggedInUserType));
+    }
+  }, []);
 
   async function fetchAllRoomTypes() {
     const response = await getAllRoomTypes();
@@ -127,7 +144,6 @@ function App() {
   }, []);
 
   function getBackgroundColor(allRoutesPaths) {
-    console.log(nonFunctionalRedux);
     for (let i = 0; i < allRoutesPaths.length; i++) {
       if (nonFunctionalRedux.location.includes(allRoutesPaths[i])) {
         return "#c4b991";
@@ -145,6 +161,14 @@ function App() {
     return "#c4b991";
   }
 
+  function handleLogout() {
+    dispatch(updateLoggedInUser({}));
+    dispatch(updateLoggedInUserType(""));
+    dispatch(updateIsUserLoggedIn(false));
+    toast.success("Logged Out Successfully");
+    sessionStorage.removeItem("userObj");
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -158,7 +182,7 @@ function App() {
               backgroundColor: "#c4b991",
             }}
           >
-            <Toolbar>
+            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography
                 variant="h6"
                 noWrap
@@ -167,6 +191,15 @@ function App() {
               >
                 Admin Panel
               </Typography>
+              {authRedux.isUserLoggedIn && (
+                <Button
+                  onClick={handleLogout}
+                  variant="filled"
+                  sx={{ background: "#fff", color: "#c4b991" }}
+                >
+                  Logout
+                </Button>
+              )}
             </Toolbar>
           </AppBar>
           <Drawer
@@ -241,73 +274,73 @@ function App() {
               <Route
                 path="/customer"
                 element={
-                  // <ProtectedRoute>
-                  <Customers />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <Customers />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/customer-detail/:bookingNumber"
                 element={
-                  // <ProtectedRoute>
-                  <CustomersDetail />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <CustomersDetail />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/rooms"
                 element={
-                  // <ProtectedRoute>
-                  <Rooms />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <Rooms />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/rooms-detail/:id"
                 element={
-                  // <ProtectedRoute>
-                  <RoomsDetail />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <RoomsDetail />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/add-rooms"
                 element={
-                  // <ProtectedRoute>
-                  <AddRoom />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <AddRoom />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/room-types"
                 element={
-                  // <ProtectedRoute>
-                  <RoomTypes />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <RoomTypes />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/room-type-detail/:id"
                 element={
-                  // <ProtectedRoute>
-                  <RoomTypeDetail />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <RoomTypeDetail />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/add-room-type"
                 element={
-                  // <ProtectedRoute>
-                  <AddRoomType />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <AddRoomType />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/offers"
                 element={
-                  // <ProtectedRoute>
-                  <Offers />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <Offers />
+                  </ProtectedRoute>
                 }
               />
             </Routes>

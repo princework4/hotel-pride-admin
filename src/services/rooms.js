@@ -1,9 +1,12 @@
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const apiVersion = import.meta.env.VITE_API_VERSION;
+
 export async function getAllRooms(hotelId = 1) {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/hotel/${hotelId}`
+      `${baseUrl}/${apiVersion}/rooms/hotel/${hotelId}`
     );
     return response;
   } catch (error) {
@@ -25,9 +28,7 @@ export async function getAllRooms(hotelId = 1) {
 
 export async function getRoomById(id) {
   try {
-    const response = await axios.get(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/${id}`
-    );
+    const response = await axios.get(`${baseUrl}/${apiVersion}/rooms/${id}`);
     return response;
   } catch (error) {
     if (error.response) {
@@ -54,7 +55,7 @@ export async function addRooms(
 ) {
   try {
     const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/hotel/${hotelId}`,
+      `${baseUrl}/${apiVersion}/rooms/hotel/${hotelId}`,
       {
         roomNumber,
         roomAvailable,
@@ -88,15 +89,12 @@ export async function updateRoom(
   roomTypeId
 ) {
   try {
-    const response = await axios.patch(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/${id}`,
-      {
-        roomNumber: roomNumber,
-        roomAvailable: roomAvailable,
-        hotelId: hotelId,
-        roomTypeId: roomTypeId,
-      }
-    );
+    const response = await axios.patch(`${baseUrl}/${apiVersion}/rooms/${id}`, {
+      roomNumber: roomNumber,
+      roomAvailable: roomAvailable,
+      hotelId: hotelId,
+      roomTypeId: roomTypeId,
+    });
     return response;
   } catch (error) {
     if (error.response) {
@@ -117,9 +115,7 @@ export async function updateRoom(
 
 export async function deleteRoom(id) {
   try {
-    const response = await axios.delete(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/rooms/${id}`
-    );
+    const response = await axios.delete(`${baseUrl}/${apiVersion}/rooms/${id}`);
     return response;
   } catch (error) {
     if (error.response) {

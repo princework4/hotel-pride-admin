@@ -1,14 +1,14 @@
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const apiVersion = import.meta.env.VITE_API_VERSION;
+
 export async function loginUser({ email, password }) {
   try {
-    const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/auth/login`,
-      {
-        email,
-        password,
-      }
-    );
+    const response = await axios.post(`${baseUrl}/${apiVersion}/auth/login`, {
+      email,
+      password,
+    });
     return response;
   } catch (error) {
     if (error.response) {
@@ -27,7 +27,7 @@ export async function loginUser({ email, password }) {
 export async function registerUser({ name, email, mobile, password }) {
   try {
     const response = await axios.post(
-      `${process.env.BASE_URL}/${process.env.API_VERSION}/auth/register`,
+      `${baseUrl}/${apiVersion}/auth/register`,
       {
         name,
         email,

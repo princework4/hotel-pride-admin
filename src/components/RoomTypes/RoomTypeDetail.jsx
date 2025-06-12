@@ -185,7 +185,6 @@ const RoomTypeDetail = () => {
     }
 
     const response = await updateRoomTypeAssets(formData);
-    console.log(response);
   }
 
   return (

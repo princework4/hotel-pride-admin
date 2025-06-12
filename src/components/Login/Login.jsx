@@ -11,11 +11,17 @@ import {
   updateLoggedInUserType,
 } from "../../features/auth/authSlice";
 import "./Login.css";
-import { ADMIN, RECEPTIONIST, SUPERADMIN } from "../../constants";
+import {
+  ADMIN,
+  ADMIN_EMAIL,
+  RECEPTIONIST,
+  RECEPTIONIST_EMAIL,
+} from "../../constants";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 import { useEffect } from "react";
 
-const LogInForm = ({ handleClose }) => {
+const LogInForm = () => {
+  const authRedux = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const [loginDetails, setLoginDetails] = React.useState({
     email: "",
@@ -34,38 +40,40 @@ const LogInForm = ({ handleClose }) => {
   }
 
   function updateUserType(data) {
-    if (data.email === "reservation@hotelpride.com")
-      dispatch(updateLoggedInUserType(RECEPTIONIST));
-    else if (data.email === "admin@hotelpride.com")
-      dispatch(updateLoggedInUserType(ADMIN));
-    else if (data.email === "superadmin@hotelpride.com")
-      dispatch(updateLoggedInUserType(SUPERADMIN));
+    if (data.email === RECEPTIONIST_EMAIL) return RECEPTIONIST;
+    else if (data.email === ADMIN_EMAIL) return ADMIN;
   }
 
   async function handleClick() {
-    const response = await loginUser(loginDetails);
-    if (response?.status === 200) {
-      setError("");
-      dispatch(updateLoggedInUser(response.data));
-      dispatch(updateIsUserLoggedIn(true));
-      updateUserType(response);
-      toast.success("Logged In Successfully");
-      sessionStorage.setItem(
-        "userObj",
-        JSON.stringify({
-          id: response.data.id,
-          name: response.data.name,
-          email: response.data.email,
-          contactNumber: response.data.contactNumber,
-          isLoggedIn: true,
-        })
-      );
-      handleClose();
-    } else if (response?.statusCode === 400 || response?.statusCode === 404) {
-      setError(response?.message);
+    if (
+      loginDetails.email.includes("reception") ||
+      loginDetails.email.includes("admin")
+    ) {
+      const response = await loginUser(loginDetails);
+      if (response?.status === 200) {
+        setError("");
+        dispatch(updateLoggedInUser(response.data));
+        dispatch(updateIsUserLoggedIn(true));
+        dispatch(updateLoggedInUserType(updateUserType(response.data)));
+        toast.success("Logged In Successfully");
+        sessionStorage.setItem(
+          "userObj",
+          JSON.stringify({
+            id: response.data.id,
+            name: response.data.name,
+            email: response.data.email,
+            isLoggedIn: true,
+            loggedInUserType: updateUserType(response.data),
+          })
+        );
+      } else if (response?.statusCode === 400 || response?.statusCode === 404) {
+        setError(response?.message);
+      } else {
+        setError("");
+        toast.error(response?.message || response?.error);
+      }
     } else {
-      setError("");
-      toast.error(response?.message || response?.error);
+      toast.error("Invalid Credentials");
     }
     setLoginDetails({
       email: "",

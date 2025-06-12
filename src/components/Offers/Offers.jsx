@@ -104,10 +104,7 @@ const Offers = () => {
       >
         Add Offers
       </Typography>
-      {/* <h2>Add Offers</h2> */}
-      {/* <CloseIconCircle /> */}
 
-      {/* <Box sx={OfferContainer}> */}
       <Box
         sx={{
           width: "500px",
@@ -118,71 +115,6 @@ const Offers = () => {
           boxShadow: 3,
         }}
       >
-        {/* <div className="form-group">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer Start Date"
-              value={offerStartDate}
-              onChange={(newValue) => setOfferStartDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer End Date"
-              value={offerEndDate}
-              onChange={(newValue) => setOfferEndDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <FormControl sx={{ minWidth: 120 }}>
-            <TextField
-              type="number"
-              name="nonAc"
-              label="Non-AC Room"
-              variant="outlined"
-              value={allOffers.nonAc}
-              onChange={handleChange}
-              sx={TextFieldStyle}
-            />
-          </FormControl>
-        </div>
         <div className="form-group">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
@@ -198,7 +130,6 @@ const Offers = () => {
                 "& label": {
                   color: "#c4b991 !important",
                   fontSize: "14px",
-                  transform: "translate(14px, 7px)",
                 },
                 "& .MuiButtonBase-root": {
                   "&:hover": {
@@ -224,138 +155,6 @@ const Offers = () => {
                 "& label": {
                   color: "#c4b991 !important",
                   fontSize: "14px",
-                  transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <FormControl sx={{ minWidth: 120 }}>
-            <TextField
-              type="number"
-              name="deluxe"
-              label="Deluxe Room"
-              variant="outlined"
-              value={allOffers.deluxe}
-              onChange={handleChange}
-              sx={TextFieldStyle}
-            />
-          </FormControl>
-        </div>
-        <div className="form-group">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer Start Date"
-              value={offerStartDate}
-              onChange={(newValue) => setOfferStartDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer End Date"
-              value={offerEndDate}
-              onChange={(newValue) => setOfferEndDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <FormControl sx={{ minWidth: 120 }}>
-            <TextField
-              type="number"
-              name="executive"
-              label="Executive Room"
-              variant="outlined"
-              value={allOffers.executive}
-              onChange={handleChange}
-              sx={TextFieldStyle}
-            />
-          </FormControl>
-        </div> */}
-
-        <div className="form-group">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer Start Date"
-              value={offerStartDate}
-              onChange={(newValue) => setOfferStartDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  //   transform: "translate(14px, 7px)",
-                },
-                "& .MuiButtonBase-root": {
-                  "&:hover": {
-                    border: "none !important",
-                    backgroundColor: "transparent !important",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Offer End Date"
-              value={offerEndDate}
-              onChange={(newValue) => setOfferEndDate(newValue)}
-              disablePast={true}
-              format="DD/MM/YYYY"
-              sx={{
-                "& fieldset": {
-                  borderColor: "#c4b991 !important",
-                },
-                "& label": {
-                  color: "#c4b991 !important",
-                  fontSize: "14px",
-                  //   transform: "translate(14px, 7px)",
                 },
                 "& .MuiButtonBase-root": {
                   "&:hover": {
@@ -381,41 +180,6 @@ const Offers = () => {
             />
           </FormControl>
         ))}
-        {/* <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
-          <TextField
-            type="number"
-            name="nonAc"
-            label="Non-AC Room"
-            variant="outlined"
-            value={allOffers.nonAc}
-            onChange={handleChange}
-            sx={TextFieldStyle}
-          />
-        </FormControl>
-
-        <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
-          <TextField
-            type="number"
-            name="deluxe"
-            label="Deluxe Room"
-            variant="outlined"
-            value={allOffers.deluxe}
-            onChange={handleChange}
-            sx={TextFieldStyle}
-          />
-        </FormControl>
-
-        <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
-          <TextField
-            type="number"
-            name="executive"
-            label="Executive Room"
-            variant="outlined"
-            value={allOffers.executive}
-            onChange={handleChange}
-            sx={TextFieldStyle}
-          />
-        </FormControl> */}
 
         <Button onClick={handleSubmit} sx={CustomButtonStyle} fullWidth>
           Submit

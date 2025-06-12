@@ -15,7 +15,7 @@ export const authSlice = createSlice({
       state.loggedInUser = action.payload;
     },
     updateLoggedInUserType: (state, action) => {
-      state.loggedInUser = action.payload;
+      state.loggedInUserType = action.payload;
     },
   },
 });

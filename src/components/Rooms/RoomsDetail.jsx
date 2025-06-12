@@ -184,15 +184,6 @@ const RoomsDetail = () => {
                 </MenuItem>
               );
             })}
-            {/* <MenuItem key={1} value={1}>
-              Non - AC
-            </MenuItem>
-            <MenuItem key={2} value={2}>
-              Deluxe
-            </MenuItem>
-            <MenuItem key={3} value={3}>
-              Superior
-            </MenuItem> */}
           </Select>
         </FormControl>
         <Box sx={{ marginTop: "20px", textAlign: "right" }}>

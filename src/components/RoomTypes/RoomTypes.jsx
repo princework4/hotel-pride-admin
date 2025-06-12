@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { deleteRoomType, getAllRoomTypes } from "../../services/roomTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
-import { ADMIN, SUPERADMIN } from "../../constants";
+import { ADMIN } from "../../constants";
+import { updateAllRoomTypes } from "../../features/room/roomSlice";
 
 const RoomTypes = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -32,7 +33,10 @@ const RoomTypes = () => {
   }
 
   useEffect(() => {
-    // fetchAllRoomTypes();
+    if (roomRedux.allRoomTypes?.length == 0) {
+      fetchAllRoomTypes();
+      dispatch(updateAllRoomTypes(allRoomTypes));
+    }
     dispatch(updateLocation(window.location.pathname));
   }, []);
 
@@ -46,12 +50,6 @@ const RoomTypes = () => {
       );
     }
   }
-
-  const rows = [
-    { id: 1, roomType: "Non - Ac" },
-    { id: 2, roomType: "Deluxe" },
-    { id: 3, roomType: "Executive" },
-  ];
 
   return (
     <Box style={{ maxWidth: "90%", margin: "20px auto 0" }}>
@@ -92,7 +90,6 @@ const RoomTypes = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {allRoomTypes?.map((roomType) => ( */}
             {roomRedux.allRoomTypes?.map((roomType) => (
               <TableRow key={roomType.id}>
                 <TableCell>{roomType.id}</TableCell>
@@ -105,8 +102,7 @@ const RoomTypes = () => {
                   >
                     Edit
                   </Button>
-                  {(authRedux.loggedInUserType === ADMIN ||
-                    authRedux.loggedInUserType === SUPERADMIN) && (
+                  {authRedux.loggedInUserType === ADMIN && (
                     <Button
                       variant="contained"
                       color="error"
