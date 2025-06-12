@@ -171,7 +171,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/admin">
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar
