@@ -278,7 +278,7 @@ const RoomTypeDetail = () => {
             sx={TextFieldStyle}
           />
         </FormControl>
-        <Box
+        {/* <Box
           sx={{
             marginTop: "20px",
           }}
@@ -300,7 +300,7 @@ const RoomTypeDetail = () => {
               multiple
             />
           </Button>
-        </Box>
+        </Box> */}
         <Box sx={{ marginTop: "20px", textAlign: "right" }}>
           <Button
             variant="contained"
@@ -309,14 +309,14 @@ const RoomTypeDetail = () => {
           >
             Back
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             sx={{ marginLeft: "20px" }}
             // onClick={handleAssetClick}
           >
             Update Assets
-          </Button>
+          </Button> */}
           <Button
             variant="contained"
             color="success"
@@ -327,7 +327,7 @@ const RoomTypeDetail = () => {
           </Button>
         </Box>
       </Box>
-      {checked && <Asset allImages={assets} setAllImages={setAssets} />}
+      {/* {checked && <Asset allImages={assets} setAllImages={setAssets} />} */}
     </Box>
   );
 };
