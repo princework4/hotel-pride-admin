@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Chip, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControlLabel,
+  Paper,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { deleteRoom, getAllRooms } from "../../services/rooms";
@@ -8,11 +16,39 @@ import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice"
 import { updateAllRooms } from "../../features/room/roomSlice";
 import { ADMIN } from "../../constants";
 
+import "./Rooms.css";
+
+const RoomCard = ({ room }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      className={`room-card ${room.available ? "available" : "unavailable"}`}
+    >
+      {console.log(room)}
+      <h3>Room #{room.roomNumber}</h3>
+      <h5>{room.roomType}</h5>
+      <span className="tag">
+        {room.available ? "🟢 Available" : "🔴 Occupied"}
+      </span>
+      <br />
+      <Button
+        className="edit-btn"
+        variant="contained"
+        // color="primary"
+        onClick={() => navigate(`/rooms-detail/${room.id}`)}
+      >
+        ✏️ Edit
+      </Button>
+    </div>
+  );
+};
+
 const Rooms = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
   const authRedux = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
-  const [allRooms, setAllRooms] = useState([]);
+  const [checked, setChecked] = useState(true);
   const navigate = useNavigate();
 
   async function fetchAllRooms() {
@@ -96,66 +132,11 @@ const Rooms = () => {
     },
   ];
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 50 },
-    { field: "roomNumber", headerName: "Room Number", width: 150 },
-    { field: "roomType", headerName: "Room Type", width: 150 },
-    {
-      field: "available",
-      headerName: "Availability",
-      type: "boolean",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <Chip
-            label={params.value === true ? "Available" : "Occupied"}
-            color={params.value === true ? "success" : "error"}
-          />
-        );
-      },
-    },
-    {
-      field: "action",
-      headerName: "Actions",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => navigate(`/rooms-detail/${params.id}`)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              style={{ marginLeft: "10px" }}
-              onClick={() => handleClick(params.id)}
-            >
-              Delete
-            </Button>
-          </>
-        );
-      },
-    },
-  ];
-
-  const rows = [
-    { id: 1, roomNumber: "101", roomType: "Non - AC", available: true },
-    { id: 2, roomNumber: "102", roomType: "Deluxe", available: true },
-    { id: 3, roomNumber: "103", roomType: "Deluxe", available: false },
-    { id: 4, roomNumber: "104", roomType: "Superior", available: true },
-    { id: 5, roomNumber: "105", roomType: "Deluxe", available: true },
-    { id: 6, roomNumber: "201", roomType: "Non - AC", available: false },
-    { id: 7, roomNumber: "202", roomType: "Superior", available: true },
-    { id: 8, roomNumber: "203", roomType: "Superior", available: false },
-    { id: 9, roomNumber: "204", roomType: "Non - AC", available: false },
-    { id: 10, roomNumber: "205", roomType: "Non - AC", available: true },
-  ];
-
   const paginationModel = { page: 0, pageSize: 10 };
+
+  const handleSwitchChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
   return (
     <Box style={{ maxWidth: "90%", margin: "20px auto 0" }}>
@@ -175,6 +156,30 @@ const Rooms = () => {
         >
           Rooms Availability
         </Typography>
+        <FormControlLabel
+          sx={{
+            "& span:last-child": {
+              color: "var(--sage)",
+              fontSize: "17px",
+              fontWeight: "600 !important",
+            },
+          }}
+          control={
+            <Switch
+              checked={checked}
+              onChange={handleSwitchChange}
+              sx={{
+                "& .Mui-checked": {
+                  color: "#c4b991 !important",
+                },
+                "& .Mui-checked+.MuiSwitch-track": {
+                  backgroundColor: "#c4b991 !important",
+                },
+              }}
+            />
+          }
+          label="Table View"
+        />
         <Button
           variant="contained"
           style={{ backgroundColor: "var(--sage)" }}
@@ -183,20 +188,37 @@ const Rooms = () => {
           Add
         </Button>
       </Box>
-      <Paper
-        sx={{ width: "100%", height: 450, marginTop: "20px", boxShadow: 3 }}
-      >
-        <DataGrid
-          // rows={rows}
-          // columns={columns}
-          rows={roomRedux.allRooms}
-          columns={allColumns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
-          // checkboxSelection
-          sx={{ border: 0 }}
-        />
-      </Paper>
+      <Box className={!checked ? "rooms_page" : ""}>
+        <Paper
+          sx={{
+            width: "100%",
+            marginTop: "20px",
+            boxShadow: !checked ? 0 : 3,
+            background: !checked ? "transparent" : "#fff",
+          }}
+          className="rooms-grid"
+        >
+          {checked ? (
+            <DataGrid
+              rows={roomRedux.allRooms}
+              columns={allColumns}
+              initialState={{ pagination: { paginationModel } }}
+              pageSizeOptions={[
+                5,
+                10,
+                roomRedux.allRooms.length < 50 ? roomRedux.allRooms.length : 50,
+                roomRedux.allRooms.length > 50 ? roomRedux.allRooms.length : 50,
+                100,
+              ]}
+              sx={{ border: 0 }}
+            />
+          ) : (
+            roomRedux.allRooms.map((room) => (
+              <RoomCard key={room.roomNumber} room={room} />
+            ))
+          )}
+        </Paper>
+      </Box>
     </Box>
   );
 };
