@@ -19,6 +19,7 @@ import {
 } from "../../constants";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LogInForm = () => {
   const authRedux = useSelector((state) => state.authReducer);
@@ -28,6 +29,13 @@ const LogInForm = () => {
     password: "",
   });
   const [error, setError] = React.useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authRedux.isUserLoggedIn) {
+      navigate(-1);
+    }
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -56,6 +64,7 @@ const LogInForm = () => {
         dispatch(updateIsUserLoggedIn(true));
         dispatch(updateLoggedInUserType(updateUserType(response.data)));
         toast.success("Logged In Successfully");
+        navigate("/customer");
         sessionStorage.setItem(
           "userObj",
           JSON.stringify({
