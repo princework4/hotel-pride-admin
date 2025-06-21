@@ -25,7 +25,6 @@ const RoomCard = ({ room }) => {
     <div
       className={`room-card ${room.available ? "available" : "unavailable"}`}
     >
-      {console.log(room)}
       <h3>Room #{room.roomNumber}</h3>
       <h5>{room.roomType}</h5>
       <span className="tag">
@@ -58,11 +57,19 @@ const Rooms = () => {
       for (let i = 0; i < response.data.length; i++) {
         const obj = {
           id: response.data[i].id,
+          index: i + 1,
           roomNumber: response.data[i].roomNumber,
           available: response.data[i].available,
           roomType: response.data[i].roomType.typeName,
         };
         transformedData.push(obj);
+      }
+
+      transformedData.sort(
+        (a, b) => Number(a.roomNumber) - Number(b.roomNumber)
+      );
+      for (let i = 0; i < transformedData.length; i++) {
+        transformedData[i]["index"] = i + 1;
       }
       dispatch(updateAllRooms(transformedData));
     }
@@ -85,7 +92,7 @@ const Rooms = () => {
   }
 
   const allColumns = [
-    { field: "id", headerName: "ID", width: 50 },
+    { field: "index", headerName: "#", width: 50 },
     { field: "roomNumber", headerName: "Room Number", width: 150 },
     { field: "roomType", headerName: "Room Type", width: 150 },
     {
@@ -204,7 +211,6 @@ const Rooms = () => {
               columns={allColumns}
               initialState={{ pagination: { paginationModel } }}
               pageSizeOptions={[
-                5,
                 10,
                 roomRedux.allRooms.length < 50 ? roomRedux.allRooms.length : 50,
                 roomRedux.allRooms.length > 50 ? roomRedux.allRooms.length : 50,

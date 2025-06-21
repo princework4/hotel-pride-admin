@@ -28,6 +28,7 @@ const Customers = () => {
           checkIn: response.data[i].checkInDate,
           checkOut: response.data[i].checkOutDate,
           bookingNumber: response.data[i].bookingNumber,
+          amountPaid: response.data[i].totalAmount,
         };
         finalArr.push(customerObj);
       }
@@ -46,8 +47,10 @@ const Customers = () => {
     { field: "email", headerName: "Email", width: 250 },
     { field: "roomNumber", headerName: "Room No", width: 100 },
     { field: "roomType", headerName: "Room Type", width: 150 },
+    { field: "bookingNumber", headerName: "Booking ID", width: 150 },
     { field: "checkIn", headerName: "Check In", width: 150 },
     { field: "checkOut", headerName: "Check Out", width: 150 },
+    { field: "amountPaid", headerName: "Amount Paid", width: 150 },
     {
       field: "action",
       headerName: "Actions",
@@ -113,7 +116,7 @@ const Customers = () => {
             rows={roomRedux.allCustomers}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 50, 100]}
             sx={{ border: 0 }}
           />
         </Paper>

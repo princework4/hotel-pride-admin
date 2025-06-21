@@ -33,7 +33,8 @@ const LogInForm = () => {
 
   useEffect(() => {
     if (authRedux.isUserLoggedIn) {
-      navigate(-1);
+      if (location.pathname === "/admin/login") navigate("/customer");
+      else navigate(-1);
     }
   }, []);
 

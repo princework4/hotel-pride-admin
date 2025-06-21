@@ -167,8 +167,8 @@ const Offers = () => {
           </LocalizationProvider>
         </div>
 
-        {roomRedux.allRoomTypes.map((roomType) => (
-          <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
+        {roomRedux.allRoomTypes.map((roomType, i) => (
+          <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth key={i}>
             <TextField
               type="number"
               name={roomType.id}
