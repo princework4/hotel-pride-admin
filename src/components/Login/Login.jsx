@@ -54,10 +54,7 @@ const LogInForm = () => {
   }
 
   async function handleClick() {
-    if (
-      loginDetails.email.includes("reception") ||
-      loginDetails.email.includes("admin")
-    ) {
+    if (loginDetails.email.includes("reception")) {
       const response = await loginUser(loginDetails);
       if (response?.status === 200) {
         setError("");

@@ -7,6 +7,7 @@ export const roomSlice = createSlice({
     allRooms: [],
     allRoomTypes: [],
     offers: {},
+    refundStatusCache: {},
   },
   reducers: {
     updateAllCustomers: (state, action) => {
@@ -21,6 +22,10 @@ export const roomSlice = createSlice({
     updateOffers: (state, action) => {
       state.offers = action.payload;
     },
+    updateRefundStatusCache: (state, action) => {
+      const { bookingId, status } = action.payload;
+      state.refundStatusCache[bookingId] = status;
+    },
   },
 });
 
@@ -29,6 +34,7 @@ export const {
   updateAllRooms,
   updateAllRoomTypes,
   updateOffers,
+  updateRefundStatusCache,
 } = roomSlice.actions;
 
 export default roomSlice.reducer;
