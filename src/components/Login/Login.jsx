@@ -14,8 +14,8 @@ import "./Login.css";
 import {
   ADMIN,
   ADMIN_EMAIL,
-  RECEPTIONIST,
-  RECEPTIONIST_EMAIL,
+  RESERVATION,
+  RESERVATION_EMAIL,
 } from "../../constants";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 import { useEffect } from "react";
@@ -49,7 +49,7 @@ const LogInForm = () => {
   }
 
   function updateUserType(data) {
-    if (data.email === RECEPTIONIST_EMAIL) return RECEPTIONIST;
+    if (data.email === RESERVATION_EMAIL) return RESERVATION;
     else if (data.email === ADMIN_EMAIL) return ADMIN;
   }
 

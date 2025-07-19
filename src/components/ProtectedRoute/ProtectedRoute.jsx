@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
-import { ADMIN, RECEPTIONIST } from "../../constants";
+import { RESERVATION } from "../../constants";
 import {
   updateIsUserLoggedIn,
   updateLoggedInUser,
@@ -22,11 +22,7 @@ const ProtectedRoute = ({ children }) => {
     }
   }, []);
 
-  if (
-    authRedux.isUserLoggedIn &&
-    (authRedux.loggedInUserType == RECEPTIONIST ||
-      authRedux.loggedInUserType == ADMIN)
-  ) {
+  if (authRedux.isUserLoggedIn && authRedux.loggedInUserType == RESERVATION) {
     return children;
   }
 
