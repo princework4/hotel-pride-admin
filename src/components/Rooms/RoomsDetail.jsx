@@ -40,6 +40,8 @@ const RoomsDetail = () => {
         roomType: response.data.roomType.id,
       });
       setRoomAvailable(response.data.available);
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -47,6 +49,8 @@ const RoomsDetail = () => {
     const response = await getAllRoomTypes();
     if (response.status === 200) {
       setAllRoomTypes(response.data);
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -82,7 +86,10 @@ const RoomsDetail = () => {
       navigate("/rooms");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }

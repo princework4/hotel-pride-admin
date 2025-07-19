@@ -66,7 +66,10 @@ const CustomersDetail = () => {
       navigate("/customer");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }

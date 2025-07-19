@@ -93,6 +93,8 @@ function App() {
     const response = await getAllRoomTypes();
     if (response.status === 200) {
       dispatch(updateAllRoomTypes(response.data));
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -110,6 +112,8 @@ function App() {
         transformedData.push(obj);
       }
       dispatch(updateAllRooms(transformedData));
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -132,6 +136,8 @@ function App() {
         finalArr.push(customerObj);
       }
       dispatch(updateAllCustomers(finalArr));
+    } else {
+      toast.error("Please try again later.");
     }
   }
 

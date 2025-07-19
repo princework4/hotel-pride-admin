@@ -78,7 +78,9 @@ const Customers = () => {
         toast.success("Booking cancelled successfully.");
         fetchAllCustomers();
       } else {
-        toast.error(response?.message || response?.error);
+        toast.error(
+          response?.message || response?.error || "Please try again later."
+        );
       }
     } catch (error) {
       toast.error("Unable to cancel stay. Please try again later.");

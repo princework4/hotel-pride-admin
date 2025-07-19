@@ -54,7 +54,7 @@ const LogInForm = () => {
   }
 
   async function handleClick() {
-    if (loginDetails.email.includes("reception")) {
+    if (loginDetails.email.includes("reservation")) {
       const response = await loginUser(loginDetails);
       if (response?.status === 200) {
         setError("");
@@ -77,7 +77,11 @@ const LogInForm = () => {
         setError(response?.message);
       } else {
         setError("");
-        toast.error(response?.message || response?.error);
+        toast.error(
+          response?.message ||
+            response?.error ||
+            "Can't login now. Please try again later."
+        );
       }
     } else {
       toast.error("Invalid Credentials");

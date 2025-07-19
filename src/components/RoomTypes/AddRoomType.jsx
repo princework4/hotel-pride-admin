@@ -61,7 +61,10 @@ const AddRoomType = () => {
       toast.success("New Room Type added successfully");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }

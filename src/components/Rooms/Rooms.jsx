@@ -17,6 +17,7 @@ import { updateAllRooms } from "../../features/room/roomSlice";
 import { ADMIN } from "../../constants";
 
 import "./Rooms.css";
+import { toast } from "react-toastify";
 
 const RoomCard = ({ room }) => {
   const navigate = useNavigate();
@@ -72,6 +73,8 @@ const Rooms = () => {
         transformedData[i]["index"] = i + 1;
       }
       dispatch(updateAllRooms(transformedData));
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -86,7 +89,10 @@ const Rooms = () => {
       toast.success("Record deleted successfully");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }

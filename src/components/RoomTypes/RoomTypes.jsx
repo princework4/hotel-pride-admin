@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../../features/nonFunctional/nonFunctionalSlice";
 import { ADMIN } from "../../constants";
 import { updateAllRoomTypes } from "../../features/room/roomSlice";
+import { toast } from "react-toastify";
 
 const RoomTypes = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -29,6 +30,8 @@ const RoomTypes = () => {
     const response = await getAllRoomTypes();
     if (response.status === 200) {
       setAllRoomTypes(response.data);
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -46,7 +49,10 @@ const RoomTypes = () => {
       toast.success("Record deleted successfully");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }

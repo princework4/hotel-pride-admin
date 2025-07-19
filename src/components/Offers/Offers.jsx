@@ -56,7 +56,10 @@ const Offers = () => {
       toast.success("Offers updated successfully.");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
 

@@ -33,6 +33,8 @@ const AddRoom = () => {
     const response = await getAllRoomTypes();
     if (response.status === 200) {
       setAllRoomTypes(response.data);
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -66,7 +68,10 @@ const AddRoom = () => {
       navigate("/rooms");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
 

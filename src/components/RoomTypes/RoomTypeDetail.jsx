@@ -129,6 +129,8 @@ const RoomTypeDetail = () => {
         roomSizeInSquareFeet: response.data?.roomSizeInSquareFeet ?? "",
       });
       setAssets(response.data?.assets);
+    } else {
+      toast.error("Please try again later.");
     }
   }
 
@@ -173,7 +175,10 @@ const RoomTypeDetail = () => {
       toast.success("Room Type Details Updated Successfully.");
     } else {
       toast.error(
-        response?.data?.error || response?.message || response?.error
+        response?.data?.error ||
+          response?.message ||
+          response?.error ||
+          "Please try again later."
       );
     }
   }
