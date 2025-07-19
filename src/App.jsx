@@ -119,26 +119,22 @@ function App() {
 
   async function fetchAllCustomers() {
     const response = await getAllCustomers();
-    if (response.status === 200) {
-      const finalArr = [];
-      for (let i = 0; i < response.data.length; i++) {
-        const customerObj = {
-          id: i,
-          index: i + 1,
-          name: response.data[i].user.name,
-          email: response.data[i].user.email,
-          roomNumber: response.data[i].rooms[0].roomNumber,
-          roomType: response.data[i].rooms[0].roomType,
-          checkIn: response.data[i].checkInDate,
-          checkOut: response.data[i].checkOutDate,
-          bookingNumber: response.data[i].bookingNumber,
-        };
-        finalArr.push(customerObj);
-      }
-      dispatch(updateAllCustomers(finalArr));
-    } else {
-      toast.error("Please try again later.");
+    const finalArr = [];
+    for (let i = 0; i < response.length; i++) {
+      const customerObj = {
+        id: i,
+        index: i + 1,
+        name: response[i].user.name,
+        email: response[i].user.email,
+        roomNumber: response[i].rooms[0].roomNumber,
+        roomType: response[i].rooms[0].roomType,
+        checkIn: response[i].checkInDate,
+        checkOut: response[i].checkOutDate,
+        bookingNumber: response[i].bookingNumber,
+      };
+      finalArr.push(customerObj);
     }
+    dispatch(updateAllCustomers(finalArr));
   }
 
   useEffect(() => {
