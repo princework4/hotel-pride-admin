@@ -30,7 +30,7 @@ const Customers = () => {
         let refundStatus = "N/A";
         const bookingId = item.bookingNumber;
 
-        if (item.status.toLowerCase() === "cancelled") {
+        if (item?.status?.toLowerCase() === "cancelled") {
           if (refundCache[bookingId]) {
             refundStatus = refundCache[bookingId];
           } else {
@@ -104,9 +104,9 @@ const Customers = () => {
           variant="body2"
           sx={{
             color:
-              params.value.toLowerCase() === "processed"
+              params?.value?.toLowerCase() === "processed"
                 ? "green"
-                : params.value.toLowerCase() === "pending"
+                : params?.value?.toLowerCase() === "pending"
                 ? "orange"
                 : "gray",
             fontWeight: "bold",
@@ -125,7 +125,7 @@ const Customers = () => {
       headerName: "Actions",
       width: 250,
       renderCell: (params) =>
-        params.row.bookingStatus.toLowerCase() !== "cancelled" && (
+        params?.row?.bookingStatus?.toLowerCase() !== "cancelled" && (
           <>
             <Button
               variant="contained"
@@ -150,10 +150,10 @@ const Customers = () => {
   ];
 
   const filteredRows = roomRedux.allCustomers.filter((customer) =>
-    customer.bookingNumber
-      .toString()
+    customer?.bookingNumber
+      ?.toString()
       .toLowerCase()
-      .includes(searchBookingId.toLowerCase())
+      .includes(searchBookingId?.toLowerCase())
   );
 
   const handleExportToExcel = () => {

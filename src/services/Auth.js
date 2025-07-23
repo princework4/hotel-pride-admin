@@ -50,3 +50,26 @@ export async function registerUser({ name, email, mobile, password }) {
     }
   }
 }
+
+export async function validateOTP(otp) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/${apiVersion}/auth/validate/otp`,
+      {
+        otp,
+      }
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      return error.response.data;
+    } else if (error.request) {
+      console.log(error.request);
+      return error.request;
+    } else {
+      console.log("Error", error.message);
+      return error.message;
+    }
+  }
+}
