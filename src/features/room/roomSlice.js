@@ -6,8 +6,10 @@ export const roomSlice = createSlice({
     allCustomers: [],
     allRooms: [],
     allRoomTypes: [],
+    allRoomTypesWithKeyAsId: {},
     offers: {},
     refundStatusCache: {},
+    taxPercent: 12,
   },
   reducers: {
     updateAllCustomers: (state, action) => {
@@ -18,6 +20,9 @@ export const roomSlice = createSlice({
     },
     updateAllRoomTypes: (state, action) => {
       state.allRoomTypes = action.payload;
+    },
+    updateAllRoomTypesWithKeyAsId: (state, action) => {
+      state.allRoomTypesWithKeyAsId = action.payload;
     },
     updateOffers: (state, action) => {
       state.offers = action.payload;
@@ -33,6 +38,7 @@ export const {
   updateAllCustomers,
   updateAllRooms,
   updateAllRoomTypes,
+  updateAllRoomTypesWithKeyAsId,
   updateOffers,
   updateRefundStatusCache,
 } = roomSlice.actions;

@@ -75,11 +75,21 @@ export async function getAllCustomers() {
   }
 }
 
-export async function updateCustomerCheckoutDate(bookingId, checkOutDate) {
+export async function updateCustomerCheckoutDate(
+  bookingId,
+  newAmount,
+  checkOutDate
+) {
   const updatedCheckOutDate = dayjs(checkOutDate).format("DD-MM-YYYY");
   try {
     const response = await axios.patch(
-      `${baseUrl}/${apiVersion}/bookings/${bookingId}/update-checkout?newCheckoutDate=${updatedCheckOutDate}`
+      // `${baseUrl}/${apiVersion}/bookings/${bookingId}/update-checkout?newCheckoutDate=${updatedCheckOutDate}`
+      `${baseUrl}/${apiVersion}/bookings/update-checkout`,
+      {
+        bookingNumber: bookingId,
+        newBookingAmount: newAmount,
+        newCheckoutDate: updatedCheckOutDate,
+      }
     );
     return response;
   } catch (error) {

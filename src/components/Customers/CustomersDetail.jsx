@@ -34,13 +34,14 @@ const CustomersDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const oldDate = roomRedux.allCustomers?.map((customer) => {
-      if (customer.bookingNumber === customerBookingNumber) {
-        return customer.checkOut;
+    let oldDate = "";
+    for (let i = 0; i < roomRedux?.allCustomers?.length; i++) {
+      if (roomRedux?.allCustomers[i].bookingNumber === customerBookingNumber) {
+        oldDate = roomRedux?.allCustomers[i].checkOut;
+        break;
       }
-      return "";
-    });
-    setOldCheckoutDate(oldDate[0].split("-").reverse().join("-"));
+    }
+    setOldCheckoutDate(oldDate.split("-").reverse().join("-"));
     dispatch(updateLocation(window.location.pathname));
   }, []);
 

@@ -10,9 +10,18 @@ import {
   updateAllCustomers,
   updateRefundStatusCache,
 } from "../../features/room/roomSlice";
-import { cancelBooking, getRefundStatus } from "../../services/booking";
+import {
+  cancelBooking,
+  confirmPostpaidBooking,
+  getRefundStatus,
+} from "../../services/booking";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import "./Customers.css";
+
+dayjs.extend(customParseFormat);
 
 const Customers = () => {
   const roomRedux = useSelector((state) => state.roomReducer);
@@ -30,7 +39,10 @@ const Customers = () => {
         let refundStatus = "N/A";
         const bookingId = item.bookingNumber;
 
-        if (item?.status?.toLowerCase() === "cancelled") {
+        if (
+          item?.status?.toLowerCase() === "cancelled" &&
+          item?.paymentType?.toLowerCase() !== "postpaid"
+        ) {
           if (refundCache[bookingId]) {
             refundStatus = refundCache[bookingId];
           } else {
@@ -51,14 +63,28 @@ const Customers = () => {
           index: i + 1,
           name: item.user.name,
           email: item.user.email,
-          roomNumber: item.rooms[0].roomNumber,
-          roomType: item.rooms[0].roomType,
+          mobile: item.user.contactNumber,
+          roomNumber: item.rooms?.map((i) => i.roomNumber).join(", "),
+          roomType: [...new Set(item.rooms?.map((i) => i.roomType))].join(", "),
           checkIn: item.checkInDate,
           checkOut: item.checkOutDate,
           bookingStatus: item.status,
+          paymentStatus:
+            item.paymentType?.toLowerCase() === "postpaid" &&
+            !item.paymentStatus
+              ? "PENDING"
+              : item.paymentStatus ?? "-",
+          bookingType: item.paymentType,
           bookingNumber: bookingId,
-          amountPaid: item.totalAmount,
+          bookingSource: item.bookingSource,
+          amountPaid:
+            item.paymentStatus?.toLowerCase() === "paid"
+              ? item.totalAmount
+              : "-",
           refundStatus,
+          noOfAdults: item.noOfAdults,
+          noOfChilds: item.noOfChildrens,
+          rooms: item.rooms,
         };
       })
     );
@@ -87,6 +113,22 @@ const Customers = () => {
     }
   };
 
+  const handlePostpaidBooking = async (bookingNumber) => {
+    try {
+      const response = await confirmPostpaidBooking(bookingNumber);
+      if (response.status === 200) {
+        toast.success("Booking confirmed successfully.");
+        fetchAllCustomers();
+      } else {
+        toast.error(
+          response?.message || response?.error || "Please try again later."
+        );
+      }
+    } catch (error) {
+      toast.error("Unable to confirm stay. Please try again later.");
+    }
+  };
+
   const columns = [
     { field: "index", headerName: "#", width: 50 },
     { field: "name", headerName: "Name", width: 200 },
@@ -94,6 +136,29 @@ const Customers = () => {
     { field: "roomNumber", headerName: "Room No", width: 100 },
     { field: "roomType", headerName: "Room Type", width: 150 },
     { field: "bookingStatus", headerName: "Booking Status", width: 150 },
+    {
+      field: "paymentStatus",
+      headerName: "Payment Status",
+      width: 150,
+      renderCell: (params) => (
+        <Typography
+          variant="body2"
+          sx={{
+            color:
+              params.value === "PAID"
+                ? "green"
+                : params.value === "PENDING"
+                ? "orange"
+                : "gray",
+            fontWeight: "bold",
+            marginTop: "15px",
+          }}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+    { field: "bookingType", headerName: "Booking Type", width: 150 },
     { field: "bookingNumber", headerName: "Booking ID", width: 150 },
     {
       field: "refundStatus",
@@ -113,40 +178,155 @@ const Customers = () => {
             marginTop: "15px",
           }}
         >
-          {params.value.toUpperCase()}
+          {params.value?.toUpperCase()}
         </Typography>
       ),
     },
     { field: "checkIn", headerName: "Check In", width: 150 },
     { field: "checkOut", headerName: "Check Out", width: 150 },
     { field: "amountPaid", headerName: "Amount Paid", width: 150 },
+
     {
       field: "action",
       headerName: "Actions",
-      width: 250,
-      renderCell: (params) =>
-        params?.row?.bookingStatus?.toLowerCase() !== "cancelled" && (
+      width: 300,
+      renderCell: (params) => {
+        const today = dayjs().startOf("day");
+        const now = dayjs();
+        const checkInDate = dayjs(params.row.checkIn, "DD/MM/YYYY").startOf(
+          "day"
+        );
+        const checkOutDate = dayjs(params.row.checkOut, "DD/MM/YYYY").startOf(
+          "day"
+        );
+        const checkoutDeadline = checkOutDate.hour(12);
+
+        const isCancelled =
+          params?.row?.bookingStatus?.toLowerCase() === "cancelled";
+        const isPostpaid = params.row.bookingType?.toLowerCase() === "postpaid";
+        const isPrepaid = params.row.bookingType?.toLowerCase() === "prepaid";
+        const isOffline =
+          params.row.bookingType?.toLowerCase() === "offline" ||
+          params.row.bookingSource?.toLowerCase() !== "own";
+        const isPastCheckout = today.isAfter(checkOutDate);
+        const isBeforeOrOnCheckIn =
+          today.isSame(checkInDate) || today.isBefore(checkInDate);
+        const isBeforeCheckIn = today.isBefore(checkInDate);
+        const isBeforeCheckoutDeadline = now.isBefore(checkoutDeadline);
+        const isPaymentPaid =
+          !params.row.paymentStatus ||
+          params.row.paymentStatus?.toLowerCase() === "pending"
+            ? false
+            : true;
+        const isTripOngoing =
+          now.isAfter(checkInDate) && now.isBefore(checkOutDate);
+
+        if (isCancelled) return null;
+        if (isPastCheckout) return null;
+        // if (isOffline) return null;
+
+        return (
           <>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() =>
-                navigate(`/customer-detail/${params.row.bookingNumber}`)
-              }
-            >
-              Edit
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ marginLeft: "5px" }}
-              onClick={() => handleCancelBooking(params.row.bookingNumber)}
-            >
-              Cancel
-            </Button>
+            {
+              // isBeforeCheckoutDeadline && (
+              //   <Button
+              //     variant="contained"
+              //     color="primary"
+              //     onClick={() =>
+              //       navigate(`/customer-detail/${params.row.bookingNumber}`)
+              //     }
+              //   >
+              //     Edit
+              //   </Button>
+              // )
+            }
+            {
+              // isBeforeCheckIn && !isPaymentPaid &&
+              !isPaymentPaid && !isTripOngoing && (
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{ marginLeft: "5px" }}
+                  onClick={() => handleCancelBooking(params.row.bookingNumber)}
+                >
+                  Cancel
+                </Button>
+              )
+            }
+            {(isPostpaid || isOffline) &&
+              isBeforeOrOnCheckIn &&
+              !isPaymentPaid &&
+              !isTripOngoing &&
+              !isPrepaid && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ marginLeft: "5px" }}
+                  onClick={() =>
+                    handlePostpaidBooking(params.row.bookingNumber)
+                  }
+                >
+                  Confirm
+                </Button>
+              )}
           </>
-        ),
+        );
+      },
     },
+    // {
+    //   field: "action",
+    //   headerName: "Actions",
+    //   width: 300,
+    //   renderCell: (params) => {
+    //     const today = dayjs().startOf("day");
+    //     const checkInDate = dayjs(params.row.checkIn, "DD/MM/YYYY").startOf(
+    //       "day"
+    //     );
+    //     const checkOutDate = dayjs(params.row.checkOut, "DD/MM/YYYY").startOf(
+    //       "day"
+    //     );
+
+    //     const isCancelled =
+    //       params?.row?.bookingStatus?.toLowerCase() === "cancelled";
+    //     const isPostpaid = params.row.bookingType?.toLowerCase() === "postpaid";
+    //     const isPastCheckout = today.isAfter(checkOutDate);
+    //     const isBeforeOrOnCheckIn =
+    //       today.isSame(checkInDate) || today.isBefore(checkInDate);
+
+    //     if (isCancelled || isPastCheckout) return null;
+    //     return (
+    //       <>
+    //         <Button
+    //           variant="contained"
+    //           color="primary"
+    //           onClick={() =>
+    //             navigate(`/customer-detail/${params.row.bookingNumber}`)
+    //           }
+    //         >
+    //           Edit
+    //         </Button>
+    //         <Button
+    //           variant="contained"
+    //           color="error"
+    //           sx={{ marginLeft: "5px" }}
+    //           onClick={() => handleCancelBooking(params.row.bookingNumber)}
+    //         >
+    //           Cancel
+    //         </Button>
+    //         {isPostpaid && isBeforeOrOnCheckIn && (
+    //           <Button
+    //             variant="contained"
+    //             color="secondary"
+    //             sx={{ marginLeft: "5px" }}
+    //             onClick={() => handlePostpaidBooking(params.row.bookingNumber)}
+    //           >
+    //             Confirm
+    //           </Button>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   const filteredRows = roomRedux.allCustomers.filter((customer) =>
@@ -238,12 +418,17 @@ const Customers = () => {
           </Box>
         </Box>
         <Paper
-          sx={{ width: "100%", height: 450, marginTop: "20px", boxShadow: 3 }}
+          sx={{ width: "100%", height: 500, marginTop: "20px", boxShadow: 3 }}
         >
           <DataGrid
             rows={filteredRows}
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
+            getRowClassName={(params) =>
+              params.row.bookingStatus?.toLowerCase() === "cancelled"
+                ? "cancelled-row"
+                : ""
+            }
             sx={{ border: 0 }}
           />
         </Paper>

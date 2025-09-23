@@ -1,7 +1,6 @@
 export const TextFieldStyle = {
   "& label": {
     fontSize: "14px",
-    // transform: "translate(14px, 12px)",
   },
   "& label.Mui-focused": {
     color: "#c4b991",
@@ -13,7 +12,7 @@ export const TextFieldStyle = {
     borderRadius: "30px",
     backgroundColor: "#fff",
     "& input": {
-      padding: "16.5 14px",
+      padding: "16.5px 14px",
     },
     "& fieldset": {
       borderColor: "rgba(0, 0, 0, 0.23)",

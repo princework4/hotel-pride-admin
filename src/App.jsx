@@ -7,6 +7,8 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import OfflinePinIcon from "@mui/icons-material/OfflinePin";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -32,6 +34,7 @@ import { getAllRooms } from "./services/rooms";
 import {
   updateAllCustomers,
   updateAllRoomTypes,
+  updateAllRoomTypesWithKeyAsId,
   updateAllRooms,
 } from "./features/room/roomSlice";
 import { getAllRoomTypes } from "./services/roomTypes";
@@ -39,6 +42,8 @@ import { getAllCustomers } from "./services/customers";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "./features/nonFunctional/nonFunctionalSlice";
 import LogInForm from "./components/Login/Login";
+import OfflineCustomer from "./components/OfflineCustomer";
+import ExtendBooking from "./components/ExtendBooking/ExtendBooking";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import {
   updateIsUserLoggedIn,
@@ -58,6 +63,8 @@ function App() {
   const allRoutes = {
     Login: ["/login"],
     "All Customers": ["/customer", "/customer-detail"],
+    "Extend Booking": ["/extend-booking"],
+    "Offline Booking": ["/offline-booking"],
     "Room Types": ["/room-types", "/room-type-detail", "/add-room-type"],
     Rooms: ["/rooms", "/rooms-detail", "/add-rooms"],
     Offers: ["/offers"],
@@ -75,6 +82,8 @@ function App() {
   const allIcons = [
     <LoginIcon />,
     <PersonIcon />,
+    <EditCalendarIcon />,
+    <OfflinePinIcon />,
     <HouseIcon />,
     <MeetingRoomIcon />,
     <LocalOfferIcon />,
@@ -93,6 +102,11 @@ function App() {
     const response = await getAllRoomTypes();
     if (response.status === 200) {
       dispatch(updateAllRoomTypes(response.data));
+      const allRoomTypesDataWithKeyAsIdTemp = {};
+      for (let i = 0; i < response.data.length; i++) {
+        allRoomTypesDataWithKeyAsIdTemp[response.data[i].id] = response.data[i];
+      }
+      dispatch(updateAllRoomTypesWithKeyAsId(allRoomTypesDataWithKeyAsIdTemp));
     } else {
       toast.error("Please try again later.");
     }
@@ -345,6 +359,22 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/offline-booking"
+                element={
+                  <ProtectedRoute>
+                    <OfflineCustomer />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/extend-booking"
+                element={
+                  <ProtectedRoute>
+                    <ExtendBooking />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Box>
         </Box>
@@ -353,5 +383,4 @@ function App() {
     </>
   );
 }
-
 export default App;
