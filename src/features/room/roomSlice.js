@@ -9,7 +9,7 @@ export const roomSlice = createSlice({
     allRoomTypesWithKeyAsId: {},
     offers: {},
     refundStatusCache: {},
-    taxPercent: 12,
+    taxPercent: 5,
   },
   reducers: {
     updateAllCustomers: (state, action) => {
