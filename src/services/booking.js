@@ -121,3 +121,64 @@ export async function confirmOfflineBooking({
     }
   }
 }
+
+export async function getRoomsAvailability(checkInDate, checkOutDate) {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/${apiVersion}/bookings/availability?hotelId=1&checkinDate=${checkInDate}&checkoutDate=${checkOutDate}`
+    );
+    // console.log(data);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      return error.response.data;
+      //   console.log(error.response.status);
+      //   console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+      return error.request;
+    } else {
+      console.log("Error", error.message);
+      return error.message;
+    }
+  }
+}
+
+export async function eventBooking({
+  email,
+  mobile,
+  name,
+  hotelId = 1,
+  checkInDate,
+  checkOutDate,
+}) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/${apiVersion}/bookings/event`,
+      {
+        userEmail: email,
+        userPhoneNumber: mobile,
+        userFullName: name,
+        hotelId,
+        checkInDate,
+        checkOutDate,
+      }
+    );
+    // console.log(data);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      return error.response.data;
+      //   console.log(error.response.status);
+      //   console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+      return error.request;
+    } else {
+      console.log("Error", error.message);
+      return error.message;
+    }
+  }
+}

@@ -41,6 +41,7 @@ import { getAllRoomTypes } from "./services/roomTypes";
 import { getAllCustomers } from "./services/customers";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "./features/nonFunctional/nonFunctionalSlice";
+import EventBooking from "./components/EventBooking";
 import LogInForm from "./components/Login/Login";
 import OfflineCustomer from "./components/OfflineCustomer";
 import ExtendBooking from "./components/ExtendBooking/ExtendBooking";
@@ -65,6 +66,7 @@ function App() {
     "All Customers": ["/customer", "/customer-detail"],
     "Extend Booking": ["/extend-booking"],
     "Offline Booking": ["/offline-booking"],
+    "Event Booking": ["/event-booking"],
     "Room Types": ["/room-types", "/room-type-detail", "/add-room-type"],
     Rooms: ["/rooms", "/rooms-detail", "/add-rooms"],
     Offers: ["/offers"],
@@ -84,6 +86,7 @@ function App() {
     <PersonIcon />,
     <EditCalendarIcon />,
     <OfflinePinIcon />,
+    <EditCalendarIcon />,
     <HouseIcon />,
     <MeetingRoomIcon />,
     <LocalOfferIcon />,
@@ -140,8 +143,8 @@ function App() {
         index: i + 1,
         name: response[i].user.name,
         email: response[i].user.email,
-        roomNumber: response[i].rooms[0].roomNumber,
-        roomType: response[i].rooms[0].roomType,
+        roomNumber: response[i].rooms[0]?.roomNumber,
+        roomType: response[i].rooms[0]?.roomType,
         checkIn: response[i].checkInDate,
         checkOut: response[i].checkOutDate,
         bookingNumber: response[i].bookingNumber,
@@ -241,27 +244,16 @@ function App() {
                   key={allRoute[0]}
                 >
                   <ListItem
-                    // to={allRoute[1][0]}
-                    // component={Link}
                     disablePadding
                     sx={{
-                      // backgroundColor:
-                      //   indexToRoute[selectedIndex] == allRoute[1]
-                      //     ? "#c4b991"
-                      //     : "#fff",
                       backgroundColor: getBackgroundColor(allRoute[1]),
                     }}
-                    // onClick={() => setSelectedIndex(index)}
                   >
                     <ListItemButton>
                       <ListItemIcon>{allIcons[index]}</ListItemIcon>
                       <ListItemText
                         primary={allRoute[0]}
                         sx={{
-                          // color:
-                          //   indexToRoute[selectedIndex] == allRoute[1]
-                          //     ? "#fff"
-                          //     : "#c4b991",
                           color: getTextColor(allRoute[1]),
                         }}
                       />
@@ -375,6 +367,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/event-booking"
+                element={
+                  <ProtectedRoute>
+                    <EventBooking />
+                  </ProtectedRoute>
+                }
+              />              
             </Routes>
           </Box>
         </Box>
